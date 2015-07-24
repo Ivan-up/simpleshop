@@ -6,7 +6,7 @@
   <head>
     <title>{#site_title#}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link type="text/css" rel="stylesheet" href="styles/simple.css" />
+    <link type="text/css" rel="stylesheet" href="styles/simpleshop.css" />
   </head>
   <body>
     <div id="doc" class="yui-t2">
