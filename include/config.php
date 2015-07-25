@@ -32,3 +32,12 @@ define('LOG_ERRORS_FILE', 'F:\\иван\\OpenServer\\domains\\simpleshop');
 /* Общее сообщение об ошибке, которое должно отображаться вместо 
 подробной информации (если DEBUGGING равно false)*/
 define('SITE_GENERIC_ERROR_MESSAGE', '<h1>TShirtShop Error!</h1>');
+
+// Параметры соединения с базой данных
+define('DB_PERSISTENCY', 'true');
+define('DB_SERVER', 'localhost');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', '');
+define('DB_PORT', '3307');
+define('DB_DATABASE', 'simpleshop');
+define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . DB_DATABASE);

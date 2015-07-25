@@ -9,8 +9,14 @@ ErrorHandler::SetHandler();
 // Загружаем шаблон страницы приложения
 require_once PRESENTATION_DIR . 'application.php';
 
+// Загружаем дескриптор базы данных
+require_once BUSINESS_DIR . 'database_handler.php';
+
 // Загружаем файл шаблонов Smarty
 $application = new Application();
 
 // Отображаем страницу
 $application->display('store_front.tpl');
+
+// Закрываем соединение с базой данных 
+DatabaseHandler::Close();
