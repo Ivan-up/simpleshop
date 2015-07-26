@@ -21,9 +21,9 @@ class DepartmentsList
 		$this->mDepartments = Catalog::GetDepartments();
 		
 		// Создаем ссылки на отделы
-		for ($i = 0; $i < count($this->mDepartments); $i++)
+		for ($i = 0; $i < count($this->mDepartments); $i++) {
 			$this->mDepartments[$i]['link_to_department'] =
-				'index.php?DepartmentId=' .
-				$this->mDepartments[$id]['department_id'];
+				Link::ToDepartment($this->mDepartments[$i]['department_id']);
+		}
 	}
 }

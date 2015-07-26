@@ -38,6 +38,15 @@ define('DB_PERSISTENCY', 'true');
 define('DB_SERVER', 'localhost');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', '');
-define('DB_PORT', '3307');
+define('DB_PORT', '3306');
 define('DB_DATABASE', 'simpleshop');
 define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . DB_DATABASE);
+
+// Порт HTTP-сервера (можно пропустить, если используем порт 80)
+//define('HTTP_SERVER_PORT', '80');
+
+/* Имя вируально директории, в которой распологается сайт, например
+		'/simpleshop/' если сайт работает из папки 
+	http://www.example.com/simpleshop/ 
+		'/' если сайт работает из папки http://www.example.com/ */
+	define('VIRTUAL_LOCATION', '/');

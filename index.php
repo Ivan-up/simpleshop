@@ -8,6 +8,7 @@ require_once BUSINESS_DIR . 'error_handler.php';
 
 // Загружаем шаблон страницы приложения
 require_once PRESENTATION_DIR . 'application.php';
+require_once PRESENTATION_DIR . 'link.php';
 
 // Загружаем дескриптор базы данных
 require_once BUSINESS_DIR . 'database_handler.php';
