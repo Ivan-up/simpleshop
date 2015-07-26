@@ -4,7 +4,7 @@
 class Catalog
 {
 	// Получаем список отделов
-	public static function GetDepartment()
+	public static function GetDepartments()
 	{
 		// Составляем SQL-запрос
 		$sql = 'CALL catalog_get_departments_list()';

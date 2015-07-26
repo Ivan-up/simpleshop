@@ -44,7 +44,7 @@ class ErrorHandler
 			($errNo == E_NOTICE || $errNo == E_USER_NOTICE))
 		
 		// Если ошибка не фатальная...
-		{
+		{ 	
 			// Выводим сообщение, только если DEBUGGING равно true
 			if (DEBUGGING == true)
 				echo '<div class="error_box"><pre>' . $error_message . '</pre></div>';

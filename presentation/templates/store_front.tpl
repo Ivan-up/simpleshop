@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="yui-b">
-					Place list of department
+					{include file="departments_list.tpl"}
         </div>			
       </div>
     </div>

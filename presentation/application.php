@@ -13,5 +13,6 @@ class Application extends Smarty
 		$this->template_dir = TEMPLATE_DIR;
 		$this->compile_dir = COMPILE_DIR;
 		$this->config_dir = CONFIG_DIR;
+		$this->plugins_dir = array(SMARTY_DIR . 'plugins', PRESENTATION_DIR . 'smarty_plugins');
 	}
 }
