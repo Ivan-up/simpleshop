@@ -36,7 +36,7 @@ class Department
 		
 		// Если посещаем категорию ...
 		if (isset($this->_mCategoryId))
-		{
+		{ 
 			$category_details =
 				Catalog::GetCategoryDetails($this->_mCategoryId);
 			$this->mName = $this->mName . ' &raquo;' .

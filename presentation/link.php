@@ -21,4 +21,11 @@ class Link
 		$link = 'index.php?DepartmentId=' . $departmentId;
 		return self::Build($link);
 	}
+	
+	public static function ToCategory($departmentId, $categoryId)
+	{
+		$link = 'index.php?DepartmentId=' . $departmentId .
+						'&CategoryId=' . $categoryId;
+		return self::Build($link);
+	}
 }

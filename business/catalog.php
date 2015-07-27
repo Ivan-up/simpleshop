@@ -39,11 +39,11 @@ class Catalog
 	
 	// Возращает название и описание выбранной категории 
 	public static function GetCategoryDetails($categoryId)
-	{
+	{ 
 		// Составляем SQL-запрос
 		$sql = "CALL catalog_get_category_details(:category_id)";
 		// Создаем массив параметров
-		$params = array(':category' => $categoryId);
+		$params = array(':category_id' => $categoryId);
 		// Выполняем запрос и возвращаем результат
 		return DatabaseHandler::GetRow($sql, $params);
 	}
