@@ -40,4 +40,14 @@ class Link
 	{
 		return self::Build('index.php?ProductId=' . $productId);
 	}
+	
+	public static function ToIndex($page = 1) 
+	{
+		$link = '';
+		
+		if ($page > 1)
+			$link .= 'index.php?Page=' . $page;
+		
+		return self::Build($link);
+	}
 }

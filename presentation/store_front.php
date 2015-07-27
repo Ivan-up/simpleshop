@@ -3,7 +3,7 @@ class StoreFront
 {
 	public $mSiteUrl;
 	// Определяем файл шаблона для содержимого страницы
-	public $mContentsCell = "blank.tpl";
+	public $mContentsCell = "first_page_contents.tpl";
 	// Определяем файл шаблона для ячеек категорий
 	public $mCategoriesCell = 'blank.tpl';
 	

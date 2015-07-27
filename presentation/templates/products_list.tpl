@@ -3,7 +3,7 @@
 {if $obj->mrTotalPages > 1}
 <p>
 	Page {$obj->mPage} of {$obj->mrTotalPages}
-	{if $obj->mLinkToPreviousPage > 1}
+	{if $obj->mLinkToPreviousPage}
 	<a href="{$obj->mLinkToPreviousPage}">Previous</a>
 	{else}
 	Previous

@@ -108,7 +108,7 @@ BEGIN
 END$$
 
 -- Создаем хранимую процедуру catalog_count_product_on_catalog
-CREATE PROCEDURE catalog_count_product_on_catalog()
+CREATE PROCEDURE catalog_count_products_on_catalog()
 BEGIN
 	SELECT COUNT(*) AS products_on_catalog_count
 	FROM product

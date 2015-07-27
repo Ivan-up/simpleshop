@@ -44,6 +44,11 @@ class ProductsList
 		elseif (isset ($this->_mDepartmentId))
 			$this->mProducts = Catalog::GetProductsOnDepartment(
 				$this->_mDepartmentId, $this->mPage, $this->mrTotalPages);
+				
+		/* Если посетитель просматривает первую страницу, получаем список его товаров, 	вызывая метод уровня логики приложения GetProductsOnCatalog() */
+		else
+			$this->mProducts = Catalog::GetProductsOnCatalog(
+				$this->mPage, $this->mrTotalPages);
 		
 		/* Если список товаров разбит на несколько страниц, отображаем 
 			навигационные элементы управления */
@@ -59,6 +64,22 @@ class ProductsList
 				elseif (isset($this->_mDepartmentId))
 					$this->mLinkToNextPage = 
 						Link::ToDepartment($this->_mDepartmentId, $this->mPage + 1);
+				else
+					$this->mLinkToNextPage = Link::ToIndex($this->mPage + 1);
+			}
+			
+			// Создаем ссылку Previous
+			if ($this->mPage > 1)
+			{ 
+				if(isset($this->_mCategoryId))
+					$this->mLinkToPreviousPage =
+						Link::ToCategory($this->_mDepartmentId, $this->_mCategoryId,
+															$this->mPage - 1);
+				elseif (isset($this->_mDepartmentId))
+					$this->mLinkToPreviousPage =
+						Link::ToDepartment($this->_mDepartmentId, $this->mPage - 1);
+				else
+					$this->mLinkToPreviousPage = Link::ToIndex($this->mPage - 1);
 			}
 		}
 		

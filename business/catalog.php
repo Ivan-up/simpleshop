@@ -155,7 +155,7 @@ class Catalog
 			$start_item = ($pageNo - 1) * PRODUCTS_PER_PAGE;
 			
 			// Получаем список товаров
-			$sql = 'CALL catalog_get_products_on_category(
+			$sql = 'CALL catalog_get_products_on_catalog(
 										:short_product_description_length,
 										:product_per_page, :start_item)';
 			
@@ -165,7 +165,7 @@ class Catalog
 					SHORT_PRODUCT_DESCRIPTION_LENGTH,
 				':product_per_page' => PRODUCTS_PER_PAGE,
 				'start_item' => $start_item );
-				
+			
 			//  Выполняем запрос и возвращаем результат
 			return DatabaseHandler::GetAll($sql, $params);
 		}
