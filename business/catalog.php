@@ -93,11 +93,11 @@ class Catalog
 			$rHowManyPages = Catalog::HowManyPages($sql, $params);
 			// Определяем, какой товар будет первым
 			$start_item = ($pageNo - 1) * PRODUCTS_PER_PAGE;
-			
+		
 			// Получаем список товаров
 			$sql = 'CALL catalog_get_products_in_category(
 											:category_id, :short_product_description_length,
-											:product_per_page, :start_item)';
+											:products_per_page, :start_item)';
 			
 			// Создаем массив параметров 
 			$params = array (
@@ -126,7 +126,7 @@ class Catalog
 			$start_item = ($pageNo - 1) * PRODUCTS_PER_PAGE;
 			
 			// Получаем список товаров
-			$sql = "CALL catalog_get_product_on_department(
+			$sql = "CALL catalog_get_products_on_department(
 										:department_id, :short_product_description_length,
 										:products_per_page, :start_item)";
 			
@@ -135,7 +135,7 @@ class Catalog
 				':department_id' => $departmentId,
 				':short_product_description_length' => 
 					SHORT_PRODUCT_DESCRIPTION_LENGTH, 
-				':product_per_page' => PRODUCTS_PER_PAGE,
+				':products_per_page' => PRODUCTS_PER_PAGE,
 				':start_item' => $start_item);
 				
 			// Выполняем запрос и возвращаем результат

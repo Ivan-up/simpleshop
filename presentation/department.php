@@ -26,7 +26,7 @@ class Department
 	}
 	
 	public function init()
-	{
+	{	
 		// Если посещаем отдел
 		$department_details =
 			Catalog::GetDepartmentDetails($this->_mDepartmentId);
