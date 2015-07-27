@@ -1,4 +1,7 @@
 <?php 
+// Активируем сеанс
+session_start();
+
 // Подключем служебные файлы
 require_once 'include/config.php';
 require_once BUSINESS_DIR . 'error_handler.php';

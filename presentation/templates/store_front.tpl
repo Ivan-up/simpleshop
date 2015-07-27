@@ -21,7 +21,7 @@
               </a>
             </div>
             <div id="contents" class="yui-g">
-              Place content here
+              {include file=$obj->mContentsCell}
             </div>
           </div>
         </div>

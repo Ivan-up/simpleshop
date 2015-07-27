@@ -50,3 +50,7 @@ define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . 
 	http://www.example.com/simpleshop/ 
 		'/' если сайт работает из папки http://www.example.com/ */
 	define('VIRTUAL_LOCATION', '/');
+	
+// Задаем параметры, используемы при генерации списков товаров
+define ('SHORT_PRODUCT_DESCRIPTION_LENGTH', 150);
+define('PRODUCTS_PER_PAGE', 4);

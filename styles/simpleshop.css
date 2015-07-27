@@ -70,3 +70,10 @@ div.yui-b div ul li a:hover {
 	background: #c6e1ec;
 	color: #333333;
 }
+.title {
+	border-left: 15px solid #0590C7;
+	padding-left: 10px;
+}
+.description {
+	font-style: italic;
+}
