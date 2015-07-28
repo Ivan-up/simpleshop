@@ -88,4 +88,68 @@ class Link
 		$string = preg_replace('#[-_ ]+#', '-', $string);
 		return strtolower($string);
 	}
+	
+	// Выполняет перенаправление по корректному URL в случае необходимости
+	public static function CheckRequest()
+	{
+		$proper_url = '';
+		
+		// Получаем правильный URL для страниц категорий
+		if (isset ($_GET['DepartmentId']) && isset($_GET['CategoryId']))
+		{
+			if (isset ($_GET['Page']))
+				$proper_url = self::ToCategory($_GET['DepartmentId'],
+																	$_GET['CategoryId'], $_GET['Page']);
+			else
+				$proper_url = self::ToCategory($_GET['DepartmentId'], 
+												$_GET['CategoryId']);
+		}
+		
+		// Получаем правильный URL для страниц отделов
+		elseif (isset ($_GET['DepartmentId']))
+		{
+			if(isset ($_GET['Page']))
+				$proper_url = self::ToDepartment($_GET['DepartmentId'],
+												$_GET['Page']);
+			else
+				$proper_url = self::ToDepartment($_GET['DepartmentId']);
+		}
+		
+		// Получаем правильный URL для страницы товаров
+		elseif (isset ($_GET['ProductId']))
+		{
+			$proper_url = self::ToProduct($_GET['ProductId']);
+		}
+		
+		// Получаем правильный URL для главной страницы
+		else
+		{
+			if (isset($_GET['Page']))
+				$proper_url = self::ToIndex($_GET['Page']);
+			else
+				$proper_url = self::ToIndex();
+		}
+		
+		/* Удаляем виртуальные локации из запрошенного URL,
+			чтобы можно было сравнить пути */
+		$requested_url = self::Build(mb_substr($_SERVER['REQUEST_URI'], 
+																	mb_strlen(VIRTUAL_LOCATION)));
+		
+		// Перенаправление с кодом 301 по корректному URL при необходимости 
+		if ($requested_url != $proper_url)
+		{
+			// Очищаем буфер вывода
+			ob_clean();
+			
+			// Выполняем перенаправление по коду 301
+			header('HTTP/1.1 301 Moved Permanently');
+			header('Location: ' . $proper_url);
+			
+			// Очищаем буфер вывода и завершаем работу
+			flush();
+			ob_flush();
+			ob_end_clean();
+			exit();
+		}
+	}
 }

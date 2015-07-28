@@ -2,6 +2,9 @@
 // Активируем сеанс
 session_start();
 
+// Создаем выходной буфер
+ob_start();
+
 // Подключем служебные файлы
 require_once 'include/config.php';
 require_once BUSINESS_DIR . 'error_handler.php';
@@ -19,6 +22,9 @@ require_once BUSINESS_DIR . 'database_handler.php';
 // Загружаем уровень логики приложения 
 require_once BUSINESS_DIR . 'catalog.php';
 
+// Коррекция URL
+Link::CheckRequest();
+
 // Загружаем файл шаблонов Smarty
 $application = new Application();
 
@@ -27,3 +33,7 @@ $application->display('store_front.tpl');
 
 // Закрываем соединение с базой данных 
 DatabaseHandler::Close();
+
+flush();
+ob_flush();
+ob_end_clean();
