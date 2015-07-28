@@ -55,6 +55,9 @@ class Product
 			$this->mProduct['image_2'] = 
 				Link::Build('product_images/' . $this->mProduct['image_2']);
 		
+		$this->mProduct['attributes'] = 
+			Catalog::GetProductAttributes($this->mProduct['product_id']);
+		
 		$this->mLocations = Catalog::GetProductLocations($this->_mProductId);
 	
 		// Генерируем ссылки на страницы отдела и категории

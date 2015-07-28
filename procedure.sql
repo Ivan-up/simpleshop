@@ -162,3 +162,18 @@ BEGIN
 						-- Этот подзапрос возращает идентификаторы категорий,
 						-- к которым принадлежит товар
 END$$
+
+-- Создаем хранимую процедуру catalog_get_product_attbibutes
+CREATE PROCEDURE catalog_get_product_attributes(IN inProductId INT)
+BEGIN
+	SELECT a.name AS attribute_name,
+		av.attribute_value_id, av.value AS attribute_value
+	FROM attribute_value av
+	INNER JOIN attribute a 
+		USING(attribute_id)
+	WHERE av.attribute_value_id IN 
+		(SELECT attribute_value_id
+			FROM product_attribute
+			WHERE product_id = inProductId)
+	ORDER BY a.name;
+END$$

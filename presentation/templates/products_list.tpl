@@ -46,6 +46,34 @@
 							<span class="price">{$obj->mProducts[k].price}</span>
 						{/if}
 					</p>
+					{* Генерируем список атрибутов и их значений *}					
+					<p class="attributes">
+					
+					{* Просматриваем список атрибутов и их значений *}
+					{section name=l loop=$obj->mProducts[k].attributes}
+					
+						{* Генерируем новый тег select? *}
+						{if $smarty.section.l.first || 
+								$obj->mProducts[k].attributes[l].attribute_name !== 
+								$obj->mProducts[k].attributes[l.index_prev].attribute_name}
+							{$obj->mProducts[k].attributes[l].attribute_name}:
+						<select name="attr_{$obj->mProducts[k].attributes[l].attributes_name}">
+						{/if}
+							
+							{* Генерируем новый тег option *}
+							<option value="{$obj->mProducts[k].attributes[l].attribute_value}">
+								{$obj->mProducts[k].attributes[l].attribute_value}
+							</option>
+							
+						{* Закрываем тег select? *}
+						{if $smarty.section.l.last ||
+								$obj->mProducts[k].attributes[l].attribute_name !==
+								$obj->mProducts[k].attributes[l.index_next].attribute_name}
+						</select>
+						{/if}
+						
+					{/section}
+					</p>
 				</td>
 			{if $smarty.section.k.index % 2 != 0 && !$smarty.section.k.first ||
 					$smarty.section.k.last}

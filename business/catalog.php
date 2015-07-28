@@ -195,4 +195,17 @@ class Catalog
 			// Выполняем запрос и возращаем результат
 			return DatabaseHandler::GetAll($sql, $params);
 		}
+		
+		// Извлекает атрибуты товаров 
+		public static function GetProductAttributes($productId)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_get_product_attributes(:product_id)';
+			
+			// Создаем массив параметров 
+			$params = array (':product_id' => $productId);
+			
+			// Выполняем запрос и возвращаем результаты
+			return DatabaseHandler::GetAll($sql, $params);
+		}
 }

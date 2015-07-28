@@ -16,6 +16,33 @@
 		<span class="price">{$obj->mProduct.discounted_price}</span>
 	{/if}
 </p>
+{* Генерируем списки значение атрибутов *}
+<p class="attributes">
+
+{* Просматриваем список атрибутов и их значений*}
+{section name=k loop=$obj->mProduct.attributes}
+	
+	{* Генерируем новый тег select? *}
+	{if $smarty.section.k.first ||
+			$obj->mProduct.attributes[k].attribute_name !== 
+			$obj->mProduct.attributes[k.index_prev].attribute_name}
+		{$obj->mProduct.attributes[k].attribute_name}:
+	<select name="attr_{$obj->mProduct.attributes[k].attribute_name}">
+	{/if}
+	
+		{* Генерируем новый тег option *}
+		<option value="{$obj->mProduct.attributes[k].attribute_value}">
+			{$obj->mProduct.attributes[k].attribute_value}
+		</option>
+	{* Закрываем тег select? *}
+	{if $smarty.section.k.last ||
+			$obj->mProduct.attributes[k].attribute_name !== 
+			$obj->mProduct.attributes[k.index_next].attribute_name}
+	</select>
+	{/if}
+	
+{/section}
+</p>
 {if $obj->mLinkToContinueShopping}
 <a href="{$obj->mLinkToContinueShopping}">Continue Shopping</a>
 {/if}
