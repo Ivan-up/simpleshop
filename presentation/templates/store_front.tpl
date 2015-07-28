@@ -5,7 +5,7 @@
  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
-    <title>{#site_title#}</title>
+    <title>{$obj->mPageTitle}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link type="text/css" rel="stylesheet" href="{$obj->mSiteUrl}styles/simpleshop.css" />
   </head>
