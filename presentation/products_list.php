@@ -29,6 +29,9 @@ class ProductsList
 		
 		if ($this->mPage < 1)
 			trigger_error('Incorrect Page value');
+		
+		// Сохраняем адрес страницы, посещенной последней
+		$_SESSION['link_to_continue_shopping'] = $_SERVER['QUERY_STRING'];
 	}
 	
 	public function init()

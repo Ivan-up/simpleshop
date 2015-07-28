@@ -50,4 +50,21 @@ class Link
 		
 		return self::Build($link);
 	}
+	
+	public static function QueryStringToArray($queryString)
+	{
+		$result = array();
+		if ($queryString != '')
+		{
+			$elements = explode('&', $queryString);
+			
+			foreach($elements as $key => $value)
+			{
+				$element = explode('=', $value);
+				$result[urldecode($element[0])] = 
+					isset($element[1]) ? urldecode($element[1]) : '';
+			}			
+		}
+		return $result;
+	}
 }

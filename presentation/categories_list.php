@@ -10,13 +10,30 @@ class CategoriesList
 	// Конструктор считывает параметр из строки запроса
 	public function __construct()
 	{
-		if (isset($_GET['DepartmentId']))
-			$this->mSelectedDepartment = (int)$_GET['DepartmentId'];
+		if (!isset($_GET['ProductId'])){
+			if (isset($_GET['DepartmentId']))
+				$this->mSelectedDepartment = (int)$_GET['DepartmentId'];
+			else
+				trigger_error('DepartmentId not set');
+			
+			if (isset($_GET['CategoryId']))
+				$this->mSelectedCategory = (int)$_GET['CategoryId'];
+		}
 		else
-			trigger_error('DepartmentId not set');
-		
-		if (isset($_GET['CategoryId']))
-			$this->mSelectedCategory = (int)$_GET['CategoryId'];
+		{
+			$continue_shopping =
+				Link::QueryStringToArray($_SESSION['link_to_continue_shopping']);
+			
+			if(array_key_exists('DepartmentId', $continue_shopping))
+				$this->mSelectedDepartment =
+					(int)$continue_shopping['DepartmentId'];
+			else
+				trigger_error('DepartmentId not set');
+			
+			if(array_key_exists('CategoryId', $continue_shopping))
+				$this->mSelectedCategory =
+					(int)$continue_shopping['CategoryId'];
+		}
 
 	}
 	

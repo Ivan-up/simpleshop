@@ -22,5 +22,16 @@ class StoreFront
 			$this->mContentsCell = 'department.tpl';
 			$this->mCategoriesCell = 'categories_list.tpl';
 		}
+		elseif (isset($_GET['ProductId']) && 
+						isset($_SESSION['link_to_continue_shopping']) &&
+						strpos($_SESSION['link_to_continue_shopping'], 'DepartmentId', 0) 
+						!== false)
+		{
+			$this->mCategoriesCell = 'categories_list.tpl';
+		}
+		
+		// Загружаем сведения о товаре на страницу товара
+		if (isset($_GET['ProductId']))
+			$this->mContentsCell = 'product.tpl';
 	}
 }
