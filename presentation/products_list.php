@@ -7,6 +7,7 @@ class ProductsList
 	public $mLinkToNextPage;
 	public $mLinkToPreviousPage;
 	public $mProducts;
+	public $mProductListPages;
 	
 	// Private-переменные
 	private $_mDepartmentId;
@@ -84,6 +85,17 @@ class ProductsList
 				else
 					$this->mLinkToPreviousPage = Link::ToIndex($this->mPage - 1);
 			}
+			
+			// Создаем ссылки на страницы списка
+			for ($i = 1; $i <= $this->mrTotalPages; $i++)
+				if (isset($this->_mCategoryId))
+					$this->mProductListPages[] =
+						Link::ToCategory($this->_mDepartmentId, $this->_mCategoryId, $i);
+			elseif (isset($this->_mDepartmentId))
+				$this->mProductListPages[] =
+					Link::ToDepartment($this->_mDepartmentId, $i);
+			else
+				$this->mProductListPages = Link::ToIndex($i);
 		}
 		
 		// Генерируем ссылки на страницы товаров
