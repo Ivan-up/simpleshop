@@ -1,0 +1,32 @@
+<IfModule mod_rewrite.c>
+
+	# Включаем mod_rewrite
+	RewriteEngine On
+	
+	# Указываем папку, в которой находится приложение.
+	# Используем /, если  приложение находится в корневой папке
+	RewriteBase /
+	
+	# Переписываем в корректный домен. чтобы избежать проблем
+	# с канонизацией ссылок
+	# RewriteCond %{HTTP_HOST} !^www\.example\.com
+	# RewriteRule ^(.*)$ http:// www.example.com/$1 [R=301, L]
+	# Переписываем URL, заканчивающиеся на /index.php или /index.html в /
+	RewriteCond %{THE_REQUEST} ^GET\ .*/index\.(php|html?)\ HTTP
+	RewriteRule ^(.*)index\.(php|html?)$ $1 [R=301,L]
+	
+	# Переписываем страницы категорий
+	RewriteRule ^.*-d([0-9]+)/.*-c([0-9]+)/page-([0-9]+)/?$ index.php?DepartmentId=$1&CategoryId=$2&Page=$3 [L]
+  RewriteRule ^.*-d([0-9]+)/.*-c([0-9]+)/?$ index.php?DepartmentId=$1&CategoryId=$2 [L]
+	
+	# Переписываем страницы отделов
+	RewriteRule ^.*-d([0-9]+)/page-([0-9]+)/?$ index.php?DepartmentId=$1&Page=$2 [L]
+	RewriteRule ^.*-d([0-9]+)/?$ index.php?DepartmentId=$1 [L]
+	
+	# Переписываем подстраницы
+	RewriteRule ^page-([0-9]+)/?$ index.php?Page=$1 [L]
+	
+	# Переписываем страницы с информацией о товарах
+	RewriteRule ^.*-p([0-9]+)/?$ index.php?ProductId=$1 [L]
+	
+</IfModule>

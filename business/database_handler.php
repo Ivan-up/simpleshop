@@ -150,7 +150,7 @@ class DatabaseHandler
 			$statement_handler->execute($params);
 			
 			// Получаем результат
-			$result = $statement_handler->fetch(PDO::FETCH_NUM);
+			$result = $statement_handler->fetch(PDO::FETCH_NUM); 
 			
 			/* Сохраняем первое значение из множества (первый столбец первой строки) 
 			в переменной $result */

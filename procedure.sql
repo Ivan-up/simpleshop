@@ -177,3 +177,21 @@ BEGIN
 			WHERE product_id = inProductId)
 	ORDER BY a.name;
 END$$
+
+-- Создаем хранимую процедуру catalog_get_department_name
+CREATE PROCEDURE catalog_get_department_name(IN inDepartmentId INT)
+BEGIN
+	SELECT name FROM department WHERE department_id = inDepartmentId;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_category_name
+CREATE PROCEDURE catalog_get_category_name(IN inCategoryId INT)
+BEGIN
+	SELECT name FROM category WHERE category_id = inCategoryId;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_product_name
+CREATE PROCEDURE catalog_get_product_name(IN inProductId INT)
+BEGIN
+	SELECT name FROM product WHERE product_id = inProductId;
+END$$

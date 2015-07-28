@@ -208,4 +208,37 @@ class Catalog
 			// Выполняем запрос и возвращаем результаты
 			return DatabaseHandler::GetAll($sql, $params);
 		}
+		
+		// Получаем название отдела
+		public static function GetDepartmentName($departmentId)
+		{	
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_get_department_name(:department_id)';
+			// Создаем массив параметров
+			$params = array(':department_id' => $departmentId);
+			// Выполняем запрос и возращаем результаты
+			return DatabaseHandler::GetOne($sql, $params);
+		}
+		
+		// Получаем название категории 
+		public static function GetCategoryName($categoryId)
+		{ 
+			// Составляем SQL-запрос
+			$sql  = 'CALL catalog_get_category_name(:category_id)';
+			// Создаем массив параметров 
+			$params = array(':category_id' => $categoryId);
+			// Выполняем запрос и возвращаем результаты
+			return DatabaseHandler::GetOne($sql, $params);
+		}
+		
+		// Получаем название товара
+		public static function GetProductName($productId)
+		{ 
+			// Составляем SQL-запрос
+			$sql  = 'CALL catalog_get_product_name(:product_id)';
+			// Создаем массив параметров 
+			$params = array(':product_id' => $productId);
+			// Выполняем запрос и возвращаем результаты
+			return DatabaseHandler::GetOne($sql, $params);
+		}
 }

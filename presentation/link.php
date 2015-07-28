@@ -18,27 +18,34 @@ class Link
 	
 	public static function ToDepartment($departmentId, $page = 1)
 	{
-		$link = 'index.php?DepartmentId=' . $departmentId;
+		$link = self::CleanUrlText(Catalog::GetDepartmentName($departmentId)) .
+						'-d' . $departmentId . '/';
 		
 		if ($page > 1)
-			$link .= '&Page=' . $page;
+			$link .= 'page-' . $page . '/';
 		
 		return self::Build($link);
 	}
 	
 	public static function ToCategory($departmentId, $categoryId, $page = 1)
 	{
-		$link = 'index.php?DepartmentId=' . $departmentId .
-						'&CategoryId=' . $categoryId;
+		$link = self::CleanUrlText(Catalog::GetDepartmentName($departmentId)) .
+						'-d' . $departmentId . '/' .
+						self::CleanUrlText(Catalog::GetCategoryName($categoryId)) .
+						'-c' . $categoryId . '/';
+						
 		if ($page > 1)
-			$link .= '&Page=' . $page;
+			$link .= 'page-' . $page . '/';
 		
 		return self::Build($link);
 	}
 	
 	public static function ToProduct($productId)
 	{
-		return self::Build('index.php?ProductId=' . $productId);
+		$link = self::CleanUrlText(Catalog::GetProductName($productId)) .
+						'-p' . $productId . '/';
+						
+		return self::Build($link);
 	}
 	
 	public static function ToIndex($page = 1) 
@@ -46,7 +53,7 @@ class Link
 		$link = '';
 		
 		if ($page > 1)
-			$link .= 'index.php?Page=' . $page;
+			$link .= 'page-' . $page . '/';
 		
 		return self::Build($link);
 	}
@@ -66,5 +73,19 @@ class Link
 			}			
 		}
 		return $result;
+	}
+	
+	// Подготавливает строку к использованию в URL
+	public static function CleanUrlText($string)
+	{
+		// Удаляем все символы, кроме a-z, 0-9, дефиса,
+		// знака подчеркивания и пробела
+		$not_acceptable_characters_regex = '#[^-a-zA-Z0-9_ ]#';
+		$string = preg_replace($not_acceptable_characters_regex, '', $string);
+		// Удаляет все пробелы в начале и в конце строки
+		$string = trim($string);
+		// Заменяет все дефисы, знаки подчеркивания и пробелы дефисами
+		$string = preg_replace('#[-_ ]+#', '-', $string);
+		return strtolower($string);
 	}
 }
