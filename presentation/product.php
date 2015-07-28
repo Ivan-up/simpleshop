@@ -56,7 +56,7 @@ class Product
 				Link::Build('product_images/' . $this->mProduct['image_2']);
 		
 		$this->mLocations = Catalog::GetProductLocations($this->_mProductId);
-		
+	
 		// Генерируем ссылки на страницы отдела и категории
 		for ($i = 0; $i < count($this->mLocations); $i++)
 		{
@@ -64,8 +64,8 @@ class Product
 				Link::ToDepartment($this->mLocations[$i]['department_id']);
 			
 			$this->mLocations[$i]['link_to_category'] = 
-				Link::ToCategory($this->mLocation[$i]['department_id'],
-													$this->mLocation[$i]['catalog_id']);
+				Link::ToCategory($this->mLocations[$i]['department_id'],
+													$this->mLocations[$i]['category_id']);
 		}
 	}
 }
