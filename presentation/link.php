@@ -135,6 +135,23 @@ class Link
 		$requested_url = self::Build(mb_substr($_SERVER['REQUEST_URI'], 
 																	mb_strlen(VIRTUAL_LOCATION)));
 		
+		// Перенаправление с кодом 404, если запрошенный отдел, категория
+		// или товар не существует
+		if (mb_strstr($proper_url, '/-'))
+		{
+			// Очищаем буфер вывода
+			ob_clean();
+			
+			// Загружаем страницу 404
+			include '404.php';
+			
+			// Очищаем буфер вывода и прекращаем выполнение
+			flush();
+			ob_flush();
+			ob_end_clean();
+			exit();
+		}
+		
 		// Перенаправление с кодом 301 по корректному URL при необходимости 
 		if ($requested_url != $proper_url)
 		{

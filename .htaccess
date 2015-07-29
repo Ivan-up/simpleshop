@@ -30,3 +30,9 @@
 	RewriteRule ^.*-p([0-9]+)/?$ index.php?ProductId=$1 [L]
 	
 </IfModule>
+
+# Задает страницу по умолчанию кода состояния 500
+ErrorDocument 500 /500.php
+
+# Задает страницу по умолчанию для кода состояния 404
+ErrorDocument 404 /404.php
