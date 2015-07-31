@@ -54,3 +54,10 @@ define('PDO_DSN', 'mysql:host=' . DB_SERVER . ';port=' . DB_PORT . ';dbname=' . 
 // Задаем параметры, используемы при генерации списков товаров
 define ('SHORT_PRODUCT_DESCRIPTION_LENGTH', 150);
 define('PRODUCTS_PER_PAGE', 4);
+
+// Установка внутреней кодировки для скрипта
+mb_internal_encoding("UTF-8");
+
+/* Минимальная длина слов, используемых в поиске; это константа должна
+быть равна значению переменной MySQL ft_min_word_len */
+define('FT_MIN_WORD_LEN', 4);

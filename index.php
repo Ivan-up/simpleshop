@@ -10,7 +10,9 @@ require_once 'include/config.php';
 require_once BUSINESS_DIR . 'error_handler.php';
 
 // Задаем обработчик ошибок
-ErrorHandler::SetHandler();
+//ErrorHandler::SetHandler();
+ini_set('error_reporting', E_ALL);
+ini_set('display_errors', 1);
 
 // Загружаем шаблон страницы приложения
 require_once PRESENTATION_DIR . 'application.php';

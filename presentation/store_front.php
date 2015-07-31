@@ -36,6 +36,10 @@ class StoreFront
 		if (isset($_GET['ProductId']))
 			$this->mContentsCell = 'product.tpl';
 		
+		// Загружаем страницу с результатами поиска, если выполнялся поиска
+		elseif (isset ($_GET['SearchResults']))
+			$this->mContentsCell = 'search_results.tpl';
+			
 		// Загружаем заголовок страницы 
 		$this->mPageTitle = $this->_GetPageTitle();
 	}
@@ -67,6 +71,25 @@ class StoreFront
 		{
 			$page_title = 'TShirtShop:' .
 				Catalog::GetProductName($_GET['ProductId']);
+		}
+		elseif (isset ($_GET['SearchResult']))
+		{
+			$page_title = 'TShirtShop: "';
+			
+			// Отоббражаем строку поиска
+			$page_title .= trim(str_replace('-', ' ', $_GET['SearchString'])) . '" (';
+			
+			// Отображаем "all-words search" или "any-words search"
+			$all_words .= isset ($_GET['AllWords']) ? $_GET['AllWords'] : 'off';
+			
+			$page_title .= (($all_words == 'on') ? 'all' : 'any') .
+											'-words search';
+			
+			// Отображаем номер страницы 
+			if (isset ($_GET['Page']) && ((int)$_GET['Page']) > 1)
+				$page_title .= ', page ' . ((int)$_GET['Page']);
+			
+			$page_title .= ')';
 		}
 		else
 		{

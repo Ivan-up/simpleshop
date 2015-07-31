@@ -23,6 +23,10 @@
 	RewriteRule ^.*-d([0-9]+)/page-([0-9]+)/?$ index.php?DepartmentId=$1&Page=$2 [L]
 	RewriteRule ^.*-d([0-9]+)/?$ index.php?DepartmentId=$1 [L]
 	
+	# Переписываем страницы с результатами поиска
+	RewriteRule ^search-results/find-(.*)/all-words-(on|off)/page-([0-9]+)/?$ index.php?SearchResults&SearchString=$1&AllWords=$2&Page=$3 [L]
+  RewriteRule ^search-results/find-?(.*)/all-words-(on|off)/?$ index.php?SearchResults&SearchString=$1&AllWords=$2&Page=1 [L]
+	
 	# Переписываем подстраницы
 	RewriteRule ^page-([0-9]+)/?$ index.php?Page=$1 [L]
 	

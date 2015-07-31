@@ -195,3 +195,61 @@ CREATE PROCEDURE catalog_get_product_name(IN inProductId INT)
 BEGIN
 	SELECT name FROM product WHERE product_id = inProductId;
 END$$
+
+-- Создаем хранимую процедуру catalog_count_search_result
+CREATE PROCEDURE catalog_count_search_result(
+	IN inSearchString TEXT, IN inAllWords VARCHAR(3))
+BEGIN
+	IF inAllWords = "on" THEN
+		PREPARE statement FROM 
+			"SELECT count(*)
+				FROM product
+				WHERE MATCH (name, description) AGAINST (? IN BOOLEAN MODE)";
+	ELSE
+		PREPARE statement FROM
+			"SELECT count(*)
+				FROM product WHERE MATCH (name, description) AGAINST (?)";
+	END IF;
+	
+	SET @p1 = inSearchString;
+	
+	EXECUTE statement USING @p1;
+END$$
+
+-- Создаем хранимую процедуру catalog_search
+CREATE PROCEDURE catalog_search(
+	IN inSearchString TEXT, IN inAllWords VARCHAR(3),
+	IN inShortProductDescriptionLength INT,
+	IN inProductsPerPage INT, IN inStartItem INT)
+BEGIN
+	IF inAllWords = "on" THEN 
+		PREPARE statement FROM 
+			"SELECT product_id, name, 
+								IF(CHAR_LENGTH(description) <=?, description,
+										CONCAT(LEFT(description, ?),'...')) as description,
+										price, discounted_price, thumbnail
+			FROM product
+			WHERE MATCH (name, description)
+						AGAINST (? IN BOOLEAN MODE)
+			ORDER BY match (name, description)
+						AGAINST (? IN BOOLEAN MODE) DESC
+			LIMIT ?, ?";
+	ELSE 
+		PREPARE statement FROM
+			"SELECT product_id, name, 
+							IF(CHAR_LENGTH(description) <= ?,	description,
+									CONCAT(LEFT(description, ?), '...')) AS description,
+									price, discounted_price, thumbnail
+							FROM product 
+							WHERE MATCH (name, description) AGAINST (?)
+							ORDER BY MATCH (name, description) AGAINST (?) DESC
+							LIMIT ?, ?";
+	END IF;
+	
+	SET @p1 = inShortProductDescriptionLength;
+	SET @p2 = inSearchString;
+	SET @p3 = inStartItem;
+	SET @p4 = inProductsPerPage;
+	
+	EXECUTE statement USING @p1, @p1, @p2, @p2, @p3, @p4;
+END$$

@@ -94,8 +94,12 @@ class Link
 	{
 		$proper_url = '';
 		
+		if (isset ($_GET['Search']) || isset($_GET['SearchResults']))
+		{
+			return;
+		}		
 		// Получаем правильный URL для страниц категорий
-		if (isset ($_GET['DepartmentId']) && isset($_GET['CategoryId']))
+		elseif (isset ($_GET['DepartmentId']) && isset($_GET['CategoryId']))
 		{
 			if (isset ($_GET['Page']))
 				$proper_url = self::ToCategory($_GET['DepartmentId'],
@@ -168,5 +172,29 @@ class Link
 			ob_end_clean();
 			exit();
 		}
+	}
+	// Создание ссылки на страницу поиска
+	public static function ToSearch()
+	{
+		return self::Build('index.php?Search');
+	}
+	
+	// Создание ссылки на страницу с результатами поиска 
+	public static function ToSearchResults($searchString, $allWords,
+																					$page = 1)
+	{
+		$link = 'search-results/find';
+		
+		if (empty($searchString))
+			$link .= '/';
+		else 
+			$link .= '-' . self::CleanUrlText($searchString) . '/';
+		
+		$link .= 'all-words-' . $allWords . '/';
+		
+		if ($page > 1)
+			$link .= 'page-' . $page . '/';
+		
+		return self::Build($link);
 	}
 }

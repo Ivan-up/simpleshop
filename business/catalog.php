@@ -241,4 +241,78 @@ class Catalog
 			// Выполняем запрос и возвращаем результаты
 			return DatabaseHandler::GetOne($sql, $params);
 		}
+		
+		// Поиск в каталоге
+		public static function Search($searchString, $allWords, 
+																	$pageNo, &$rHowManyPages)
+		{
+			// Результат поиска будет массивом следующие структуры
+			$search_result = array ('accepted_words' => array (),
+															'ignored_words' => array (),
+															'products' => array());
+		
+			// Возвращаем void, если строка поиска пустая
+			if (empty($searchString))
+				return $search_result;
+			
+			// Символы-разделители
+			$delimiters = ',.; ';
+			
+			/* При первом вызове strtok мы передаем ей всю строку поиска
+				и список разделителей. Она возращает первое слово строки. */
+			$word = strtok($searchString, $delimiters);
+			// Просматриваем строку до конца, слово за словом
+			while ($word)
+			{
+				// Короткие слова добавляются в список ignored_words из $search_result
+				if (mb_strlen($word) < FT_MIN_WORD_LEN)
+					$search_result['ignored_words'][] = $word;
+				else
+					$search_result['accepted_words'][] = $word;
+				
+				// Получаем следующее слово из строки из поиска
+				$word = strtok($delimiters);
+			}
+			
+			// Если подходящиз слов нет, возращаем $search_result 
+			if (count($search_result['accepted_words']) == 0)
+				return $search_result;
+				
+			// Составляем $search_string из подходящих слов
+			$search_string = '';
+			
+			// Если $allWords в значении 'on', добавляем символы ' +' к каждому слову
+			if (strcmp($allWords, "on") == 0)
+				$search_string = implode(" +", $search_result['accepted_words']);
+			else
+				$search_string = implode(" ", $search_result['accepted_words']);
+	
+			// Подсчитывае кол-во результатов поиска
+			$sql = 'CALL catalog_count_search_result(:search_string, :all_words)';
+			$params = array(':search_string' => $search_string,
+											':all_words' => $allWords);
+			// Вычисляем количество страниц, необходимое для отображения товаров
+			$rHowManyPages = Catalog::HowManyPages($sql, $params);
+			// Определяем номер первого товара
+			$start_item = ($pageNo - 1) * PRODUCTS_PER_PAGE;
+			
+			// Извлекаем список подходящих товаров 
+			$sql = 'CALL catalog_search(:search_string, :all_words, 
+																	:short_product_description_length,
+																	:products_per_page, :start_item)';
+			
+			// Создаем массив параметров
+			$params = array (':search_string' => $search_string,
+												':all_words' => $allWords,
+												':short_product_description_length' =>
+													SHORT_PRODUCT_DESCRIPTION_LENGTH,
+												':products_per_page' => PRODUCTS_PER_PAGE,
+												':start_item' => $start_item);
+			
+			// Выполняем запрос
+			$search_result['products'] = DatabaseHandler::GetAll($sql, $params);
+			
+			// Возращаем результаты
+			return $search_result;
+		}
 }

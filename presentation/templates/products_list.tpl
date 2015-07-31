@@ -1,5 +1,8 @@
 {* products_list *}
 {load_presentation_object filename="products_list" assign="obj"}
+{if $obj->mSearchDescription != ""}
+	<p class="description">{$obj->mSearchDescription}</p>
+{/if}
 {if count($obj->mProductListPages) > 0}
 <p>
 
@@ -65,14 +68,14 @@
 						{if $smarty.section.l.first || 
 								$obj->mProducts[k].attributes[l].attribute_name !== 
 								$obj->mProducts[k].attributes[l.index_prev].attribute_name}
-							{$obj->mProducts[k].attributes[l].attribute_name}:
-						<select name="attr_{$obj->mProducts[k].attributes[l].attributes_name}">
+							{$obj->mProducts[k].attributes[l].attribute_name}: 
+						<select name="attr_{$obj->mProducts[k].attributes[l].attribute_name}">
 						{/if}
 							
 							{* Генерируем новый тег option *}
-							<option value="{$obj->mProducts[k].attributes[l].attribute_value}">
+						<option value="{$obj->mProducts[k].attributes[l].attribute_value}">
 								{$obj->mProducts[k].attributes[l].attribute_value}
-							</option>
+						</option>
 							
 						{* Закрываем тег select? *}
 						{if $smarty.section.l.last ||

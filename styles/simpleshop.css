@@ -121,3 +121,14 @@ ol li {
 	display: block;
 	padding-top: 5px;
 }
+
+div.yui-b div form {
+	padding: 5px 10px;
+}
+input, select, textarea {
+	font-family: "georgia";
+	font-size: 85%;
+}
+.words {
+	color: #ff0000;
+}

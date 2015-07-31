@@ -43,6 +43,11 @@ class Product
 			elseif (isset ($continue_shopping['DepartmentId']))
 				$this->mLinkToContinueShopping =
 					Link::ToDepartment((int)$continue_shopping['DepartmentId'], $page);
+			elseif (isset ($continue_shopping['SearchResults']))
+				$this->mLinkToContinueShopping =
+					Link::ToSearchResults(
+						trim(str_replace('-', ' ', $continue_shopping['SearchString'])),
+						$continue_shopping['AllWords'], $page);
 			else
 				$this->mLinkToContinueShopping = Link::ToIndex($page);
 		}
