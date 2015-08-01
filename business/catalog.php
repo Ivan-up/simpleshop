@@ -315,4 +315,59 @@ class Catalog
 			// Возращаем результаты
 			return $search_result;
 		}
+		
+		// Извлекаем из базы данных названия и описания всех отделов
+		public static function GetDepartmentsWithDescriptions()
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_get_departments()';
+			
+			// Выполняем запрос и возращаем результаты
+			return DatabaseHandler::GetAll($sql);
+		}
+		
+		// Добавляет отдел 
+		public static function AddDepartment($departmentName, $departmentDescription)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_add_department(:department_name,
+																					:department_description)';
+			
+			// Создаем массив параметров 
+			$params = array (':department_name' => $departmentName,
+												':department_description' => $departmentDescription);
+			
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Обновляем сведения об отделе
+		public static function UpdateDepartment($departmentId, $departmentName,
+																						$departmentDescription)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_update_department(:department_id, :department_name,
+																							:department_description)';
+			
+			// Создаем массив параметров 
+			$params = array (':department_id' => $departmentId,
+												':department_name' => $departmentName,
+												':department_description' => $departmentDescription);
+			
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Удаляет отдел
+		public static function DeleteDepartment($departmentId)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_delete_department(:department_id)';
+			
+			// Создаем массив параметров
+			$params = array(':department_id' => $departmentId);
+			
+			// Выполняем запрос  и возращаем результаты 
+			return DatabaseHandler::GetOne($sql, $params);
+		}
 }

@@ -61,3 +61,11 @@ mb_internal_encoding("UTF-8");
 /* Минимальная длина слов, используемых в поиске; это константа должна
 быть равна значению переменной MySQL ft_min_word_len */
 define('FT_MIN_WORD_LEN', 4);
+
+// Идентификатор и пароль администратора
+define ('ADMIN_USERNAME', 'admin');
+define ('ADMIN_PASSWORD', 'admin');
+
+// Если эта константа(yes) не установлена в no, доступ к
+// страницам администрирования возможен только с помощью SSL
+define('USE_SSL', 'no');

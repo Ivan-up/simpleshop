@@ -1,12 +1,14 @@
 <?php 
 class Link
 {
-	public static function Build($link)
+	public static function Build($link, $type = 'http')
 	{
-		$base = 'http://' . getenv('SERVER_NAME');
+		$base = (($type == 'http' || USE_SSL == 'no') ? 'http://' : 'https://') . 
+						getenv('SERVER_NAME');
 		// Если константа HTTP_SERVER_PORT определена и значение отличается
 		// от используемого по умолчанию...
-		if (defined('HTTP_SERVER_PORT') && HTTP_SERVER_PORT != 80)
+		if (defined('HTTP_SERVER_PORT') && HTTP_SERVER_PORT != 80 &&
+				strpos($base, 'https') === false)
 		{
 			// Добавляем номер порта
 			$base .= ':' . HTTP_SERVER_PORT;
@@ -196,5 +198,26 @@ class Link
 			$link .= 'page-' . $page . '/';
 		
 		return self::Build($link);
+	}
+	
+	// Создаем ссылку на страницу администрирования
+	public static function ToAdmin($params = '')
+	{
+		$link = 'admin.php'; 
+		if ($params != '')
+			$link .= '?' . $params;
+		return self::Build($link, 'https');
+	}
+	
+	// Создаем ссылку для выхода
+	public static function ToLogout()
+	{
+		return self::ToAdmin('Page=Logout');
+	}
+	
+	// Создание ссылки на страницу администрирования отделов
+	public static function ToDepartmentsAdmin()
+	{
+		return self::ToAdmin('Page=Departments');
 	}
 }
