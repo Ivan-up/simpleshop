@@ -48,6 +48,8 @@ class StoreAdmin
 			// Выбираем, какую страницу администрирования загружать...
 			if ($admin_page == 'Departments')
 				$this->mContentsCell = 'admin_departments.tpl';
+			elseif ($admin_page == 'Categories')
+				$this->mContentsCell = 'admin_categories.tpl';
 		}		
 	}
 }

@@ -220,4 +220,11 @@ class Link
 	{
 		return self::ToAdmin('Page=Departments');
 	}
+	
+	// Создает ссылку на страницу администрирования категорий
+	public static function ToDepartmentCategoriesAdmin($departmentId)
+	{
+		$link = 'Page=Categories&DepartmentId=' . $departmentId;
+		return self::ToAdmin($link);
+	}
 }

@@ -370,4 +370,62 @@ class Catalog
 			// Выполняем запрос  и возращаем результаты 
 			return DatabaseHandler::GetOne($sql, $params);
 		}
+		
+		// Возращает список категорий отдела
+		public static function GetDepartmentCategories($departmentId)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_get_department_categories(:department_id)';
+			
+			// Создаем массив параметров
+			$params = array (':department_id' => $departmentId);
+			
+			// Выполняем запрос и возращаем результаты
+			return DatabaseHandler::GetAll($sql, $params);
+		}
+		
+		// Добавляем новую категорию
+		public static function AddCategory($departmentId, $categoryName,
+																				$categoryDescription)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_add_category(:department_id, :category_name,
+																					:category_description)';
+			// Создаем массив параметров 
+			$params = array (':department_id' => $departmentId,
+												':category_name' => $categoryName,
+												':category_description' => $categoryDescription);
+			
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Обновляет категорию
+		public static function UpdateCategory($categoryId, $categoryName,
+																					$categoryDescription)
+		{
+			// Составляе SQL-запрос
+			$sql = 'CALL catalog_update_category(:category_id, :category_name,
+																						:category_description)';
+			// Создаем массив параметров
+			$params = array(':category_id' => $categoryId,
+											':category_name' => $categoryName,
+											':category_description' => $categoryDescription);
+			
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Удаляем запрос 
+		public static function DeleteCategory($categoryId)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_delete_category(:category_id)';
+			
+			// Создаем массив параметров 
+			$params = array ('category_id' => $categoryId);
+			
+			// Выполняем запрос и возвращаем результаты 
+			return DatabaseHandler::GetOne($sql, $params);
+		}
 }
