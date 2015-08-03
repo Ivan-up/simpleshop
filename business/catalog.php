@@ -416,7 +416,7 @@ class Catalog
 			DatabaseHandler::Execute($sql, $params);
 		}
 		
-		// Удаляем запрос 
+		// Удаляем категорию
 		public static function DeleteCategory($categoryId)
 		{
 			// Составляем SQL-запрос 
@@ -426,6 +426,124 @@ class Catalog
 			$params = array ('category_id' => $categoryId);
 			
 			// Выполняем запрос и возвращаем результаты 
+			return DatabaseHandler::GetOne($sql, $params);
+		}
+		
+		// Возвращаем все атрибуты
+		public static function GetAttributes()
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_get_attributes()';
+			
+			// Выполняем и возвращаем результаты 
+			return DatabaseHandler::GetAll($sql);
+		}
+		
+		// Добавляет атрибут 
+		public static function AddAttribute($attributeName)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_add_attribute(:attribute_name)';
+			
+			// Создаем массив параметров
+			$params = array (':attribute_name' => $attributeName);
+			
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Обновляем имя атрибута
+		public static function UpdateAttribute($attributeId, $attributeName)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_update_attribute(:attribute_id, :attribute_name)';
+			
+			// Создаем массив параметров 
+			$params = array (':attribute_id' => $attributeId,
+												':attribute_name' =>$attributeName);
+			
+			// Выполняем запрос
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Удаляем атрибут
+		public static function DeleteAttribute($attributeId)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_delete_attribute(:attribute_id)';
+			
+			// Создаем массив параметров 
+			$params = array (':attribute_id' => $attributeId);
+			
+			// Выполняем запрос и возращаем результаты 
+			return DatabaseHandler::GetOne($sql, $params);
+		}
+		
+		// Возращаем свеедения о выбранном атрибуте
+		public static function GetAttributeDetails($attributeId)
+		{
+			// Создаем SQL-запрос 
+			$sql = 'CALL catalog_get_attribute_details(:attribute_id)';
+			
+			// Создаем массив параметров
+			$params = array (':attribute_id' => $attributeId);
+			
+			// Выполняем запрос и возращаем результаты 
+			return DatabaseHandler::GetRow($sql, $params);
+		}
+		
+		// Возвращаем значения атрибута 
+		public static function GetAttributeValues($attributeId)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_get_attribute_values(:attribute_id)';
+			
+			// Создаем массив параметров 
+			$params = array (':attribute_id' => $attributeId);
+			
+			// Выполняем запрос и возвращаем результаты 
+			return DatabaseHandler::GetAll($sql, $params);
+		}
+		
+		// Добавляем значение атрибута 
+		public static function AddAttributeValue($attributeId, $attributeValue)
+		{
+			// Составляем SQL-запрос 
+			$sql = 'CALL catalog_add_attribute_value(:attribute_id, :value)';
+			
+			// Создаем массив параметров 
+			$params = array(':attribute_id' => $attributeId,
+				':value' => $attributeValue);
+				
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);
+		}
+		
+		// Обновляем значение атрибута 
+		public static function UpdateAttributeValue(
+															$attributeValueId, $attributeValue)
+		{
+			// Составляем SQL-запрос
+			$sql = 'CALL catalog_update_attribute_value(
+										:attribute_value_id, :value)';
+			// Создаем массив параметров
+			$params = array (':attribute_value_id' => $attributeValueId,
+												':value' => $attributeValue);
+	
+			// Выполняем запрос 
+			DatabaseHandler::Execute($sql, $params);														
+		}
+		
+		// Удаляет значение атрибута 
+		public static function DeleteAttributeValue($attributeValueId)
+		{
+			// Создаем SQL - запрос 
+			$sql = 'CALL catalog_delete_attribute_value(:attribute_value_id)';
+			
+			// Создаем массив параметров 
+			$params = array (':attribute_value_id' => $attributeValueId);
+			
+			// Выполняем запрос и возвращаем результаты
 			return DatabaseHandler::GetOne($sql, $params);
 		}
 }

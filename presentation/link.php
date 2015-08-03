@@ -227,4 +227,17 @@ class Link
 		$link = 'Page=Categories&DepartmentId=' . $departmentId;
 		return self::ToAdmin($link);
 	}
+	
+	// Создаем ссылку на страницу администрирования атрибутов
+	public static function ToAttributesAdmin()
+	{
+		return self::ToAdmin('Page=Attributes');
+	}
+	
+	// Создаем ссылку на страницу администрирования значений атрибутов 
+	public static function ToAttributeValuesAdmin($attributeId)
+	{
+		$link = 'Page=AttributeValues&AttributeId=' . $attributeId;
+		return self::ToAdmin($link);
+	}
 }

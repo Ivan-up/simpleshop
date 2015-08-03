@@ -113,7 +113,7 @@ class AdminCategories
 		if ($this->_mAction == 'edit_prod')
 		{
 			header('Location: ' . 
-							htmlspecialchar_decode(
+							htmlspecialchars_decode(
 								Link::ToCategoryProductsAdmin($this->mDepartmentId,
 																								$this->_mActionedCategoryId)));
 			exit();

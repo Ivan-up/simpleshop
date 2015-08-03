@@ -345,3 +345,96 @@ BEGIN
 		SELECT -1;
 	END IF;
 END$$
+
+-- Создаем хранимую процедуру catalog_get_attributes
+CREATE PROCEDURE catalog_get_attributes()
+BEGIN
+	SELECT attribute_id, name FROM attribute ORDER BY attribute_id;
+END$$
+
+-- Создаем хранимую процедуру catalog_add_attribute
+CREATE PROCEDURE catalog_add_attribute(IN inName VARCHAR(100))
+BEGIN
+	INSERT INTO attribute (name) VALUES (inName);
+END$$
+
+-- Создаем хранимую процедуру catalog_update_attribute
+CREATE PROCEDURE catalog_update_attribute(
+	IN inAttributeId INT, IN inName VARCHAR(100))
+BEGIN
+	UPDATE attribute SET name = inName WHERE attribute_id = inAttributeId;
+END$$
+
+--  Создаем хранимую процедуру catalog_delete_attribute
+CREATE PROCEDURE catalog_delete_attribute(IN inAttributeId INT)
+BEGIN
+	DECLARE attributeRowsCount INT;
+	
+	SELECT count(*)
+	FROM attribute_value
+	WHERE attribute_id = inAttributeId
+	INTO attributeRowsCount;
+	
+	IF attributeRowsCount = 0 THEN
+		DELETE FROM attribute WHERE attribute_id = inAttributeId;
+		
+		SELECT 1;
+	ELSE
+		SELECT -1;
+	END IF;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_attribute_details
+CREATE PROCEDURE catalog_get_attribute_details(IN inAttributeId INT)
+BEGIN
+	SELECT attribute_id, name 
+	FROM attribute
+	WHERE attribute_id = inAttributeId;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_attribute_values
+CREATE PROCEDURE catalog_get_attribute_values(IN inAttributeId INT)
+BEGIN
+	SELECT attribute_value_id, value
+	FROM attribute_value
+	WHERE attribute_id = inAttributeId
+	ORDER BY attribute_id;
+END$$
+
+-- Создаем хранимую процедуру catalog_add_attribute_value
+CREATE PROCEDURE catalog_add_attribute_value(
+	IN inAttributeId INT, IN inValue VARCHAR(100))
+BEGIN
+	INSERT INTO attribute_value (attribute_id, value)
+					VALUES (inAttributeId, inValue);
+END$$
+
+-- Создаем хранимую процедуру catalog_update_attribute_value
+CREATE PROCEDURE catalog_update_attribute_value(
+	IN inAttributeValueId INT, IN inValue VARCHAR(100))
+BEGIN 
+	UPDATE attribute_value
+	SET value = inValue
+	WHERE attribute_value_id = inAttributeValueId;
+END$$
+
+-- Создаем хранимую процедуру catalog_delete_attribute_value
+CREATE PROCEDURE catalog_delete_attribute_value(IN inAttributeValueId INT)
+BEGIN 
+	DECLARE productAttributeRowsCount INT;
+	
+	SELECT count(*)
+	FROM product p 
+	INNER JOIN product_attribute pa
+								ON p.product_id = inAttributeValueId
+	WHERE pa.attribute_value_id = inAttributeValueId
+	INTO productAttributeRowsCount;
+	
+	IF productAttributeRowsCount = 0 THEN 
+		DELETE FROM attribute_value WHERE attribute_value_id = inAttributeValueId;
+	
+		SELECT 1;
+	ELSE
+		SELECT -1;
+	END IF;
+END$$
