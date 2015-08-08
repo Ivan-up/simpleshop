@@ -178,3 +178,24 @@ table.tss-table td {
 	border: none;
 	border-bottom: 1px solid #0590c7;
 }
+.borderless-table {
+	width: 100%;
+}
+.borderless-table td {
+	border: none;
+	padding-left: 0;
+}
+.bold-text {
+	font-size: 93%;
+	font-weight: bold;
+}
+div.yui-b div form.edit-form
+{
+	margin: 0;
+	padding: 0;
+}
+.edit-form
+{
+	margin: 0;
+	padding: 0 0 10px 0;
+}

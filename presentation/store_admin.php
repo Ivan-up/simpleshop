@@ -54,6 +54,10 @@ class StoreAdmin
 				$this->mContentsCell = 'admin_attributes.tpl';
 			elseif ($admin_page == "AttributeValues")
 				$this->mContentsCell = 'admin_attribute_values.tpl';
+			elseif ($admin_page == 'Products')
+				$this->mContentsCell = 'admin_products.tpl';
+			elseif ($admin_page == 'ProductDetails')
+				$this->mContentsCell = 'admin_product_details.tpl';
 		}		
 	}
 }

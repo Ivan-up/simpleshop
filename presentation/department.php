@@ -5,6 +5,10 @@ class Department
 	// Public-переменные для шаблона Smarty
 	public $mName;
 	public $mDescription;
+	public $mEditActionTarget;
+	public $mEditAction;
+	public $mEditButtonCaption;
+	public $mShowEditButton;
 	
 	// Private-элементы
 	private $_mDepartmentId;
@@ -23,6 +27,13 @@ class Department
 			(преобразуя его в integer для защиты от некорректных значений)*/
 		if (isset ($_GET['CategoryId']))
 			$this->_mCategoryId = (int)$_GET['CategoryId'];
+		
+		// Отображаем кнопку редактирования, если посетитель - администратор
+		if (!(isset ($_SESSION['admin_logged'])) ||
+				$_SESSION['admin_logged'] != true)
+			$this->mShowEditButton = false;
+		else
+			$this->mShowEditButton = true;
 	}
 	
 	public function init()
@@ -42,6 +53,17 @@ class Department
 			$this->mName = $this->mName . ' &raquo;' .
 				$category_details['name'];
 			$this->mDescription = $category_details['description'];
+			
+			$this->mEditActionTarget =
+				Link::ToDepartmentCategoriesAdmin($this->_mDepartmentId);
+			$this->mEditAction = 'edit_cat_' . $this->_mCategoryId;
+			$this->mEditButtonCaption = 'Edit Category Details';
+		}
+		else
+		{
+			$this->mEditActionTarget = Link::ToDepartmentsAdmin();
+			$this->mEditAction = 'edit_dept_' . $this->_mDepartmentId;
+			$this->mEditButtonCaption = 'Edit Department Details';
 		}
 	}
 	

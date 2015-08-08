@@ -86,6 +86,17 @@
 						
 					{/section}
 					</p>
+					
+					{* Отображаем кнопку редактирования для администраторов *}
+					{if $obj->mShowEditButton}
+						<form action="{$obj->mEditActionTarget}" target="_self" 
+							method="post" class="edit-form">
+						<input type="hidden" name="product_id" 
+							value="{$obj->mProducts[k].product_id}"/>
+						<input type="submit" name="submit" value="Edit Product Details" />
+					</form>
+					{/if}					
+					
 				</td>
 			{if $smarty.section.k.index % 2 != 0 && !$smarty.section.k.first ||
 					$smarty.section.k.last}

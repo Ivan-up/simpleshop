@@ -43,6 +43,17 @@
 	
 {/section}
 </p>
+
+{* Отображаем кнопку редактирования для администратора *}
+{if $obj->mShowEditButton}
+<form action="{$obj->mEditActionTarget}" target="_self" 
+	method="post" class="edit-form">
+	<p>
+		<input type="submit" name="submit_edit" value="Edit Product Details" />
+	</p>
+</form>
+{/if}
+
 {if $obj->mLinkToContinueShopping}
 <a href="{$obj->mLinkToContinueShopping}">Continue Shopping</a>
 {/if}

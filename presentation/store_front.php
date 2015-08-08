@@ -18,6 +18,8 @@ class StoreFront
 	// Инициализируем объект представления
 	public function init()
 	{
+		$_SESSION['link_to_store_front'] =
+			Link::Build(str_replace(VIRTUAL_LOCATION, '', getenv('REQUEST_URL')));
 		// Загружаем подробные сведения об отделе на страницу отдела
 		if (isset($_GET['DepartmentId']))
 		{

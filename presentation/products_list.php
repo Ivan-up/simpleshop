@@ -11,6 +11,8 @@ class ProductsList
 	public $mSearchDescription;
 	public $mAllWords = 'off';
 	public $mSearchString;
+	public $mEditActionTarget;
+	public $mShowEditButton;
 	
 	// Private-переменные
 	private $_mDepartmentId;
@@ -43,10 +45,49 @@ class ProductsList
 		
 		// Сохраняем адрес страницы, посещенной последней
 		$_SESSION['link_to_continue_shopping'] = $_SERVER['QUERY_STRING'];
+		
+		// Отображаем кнопку редактирования для администраторов
+		if (!(isset($_SESSION['admin_logged'])) ||
+				$_SESSION['admin_logged'] != true)
+			$this->mShowEditButton = false;
+		else
+			$this->mShowEditButton = true;
 	}
 	
 	public function init()
 	{	
+		// Подготавливаем кнопку редактирования
+		$this->mEditActionTarget =
+			Link::Build(mb_substr($_SERVER['REQUEST_URI'], 
+									mb_strlen(VIRTUAL_LOCATION)));
+		
+		if (isset ($_SESSION['admin_logged']) && 
+				$_SESSION['admin_logged'] == true &&
+				isset ($_POST['product_id']))
+		{
+			if (isset ($this->_mDepartmentId) && isset ($this->_mCategoryId))
+				header('Location: ' .
+								htmlspecialchars_decode(
+								Link::ToProductAdmin($this->_mDepartmentId,
+																			$this->_mCategoryId,
+																			(int)$_POST['product_id'])));
+			else
+			{
+				$product_locations = 
+					Catalog::GetProductLocations((int)$_POST['product_id']);
+				
+				if (count($product_locations) > 0)
+				{
+					$department_id =  $product_location[0]['department_id'];
+					$category_id = $product_location[0]['category_id'];
+					header('Location: ' . 
+									htmlspecialchars_decode(
+									Link::ToProductAdmin($department_id,
+																				$category_id,
+																				(int)$_POST['product_id'])));
+				}
+			}
+		}
 		/* Если выполнялся поиск, получаем список товаров, вызывая 
 			метод уровня логики приложения Search() */
 		if (isset($this->mSearchString))

@@ -438,3 +438,181 @@ BEGIN
 		SELECT -1;
 	END IF;
 END$$
+
+-- Создаем хранимую процедуру catalog_get_category_products
+CREATE PROCEDURE catalog_get_category_products (IN inCategoryId INT)
+BEGIN
+	SELECT p.product_id, p.name, p.description, p.price,
+					p.discounted_price
+	FROM product p
+	INNER JOIN product_category pc 
+		USING (product_id)
+	WHERE pc.category_id = inCategoryId 
+	ORDER BY p.product_id;
+END$$
+
+-- Cоздаем хранимую процедуру catalog_add_product_to_category
+CREATE PROCEDURE catalog_add_product_to_category (IN inCategoryId INT,
+	IN inName VARCHAR(100), IN inDescription VARCHAR(1000),
+	IN inPrice DECIMAL(10, 2))
+BEGIN
+	DECLARE productLastInsertId INT;
+	
+	INSERT INTO product (name, description, price)
+				VALUES (inName, inDescription, inPrice);
+	
+	SELECT LAST_INSERT_ID() INTO productLastInsertId;
+	
+	INSERT INTO product_category (product_id, category_id)
+					VALUES (productLastInsertId, inCategoryId);
+END$$
+
+-- Создаем хранимую процедуру catalog_update_product
+CREATE PROCEDURE catalog_update_product(IN inProductId INT, 
+	IN inName VARCHAR(100), IN inDescription VARCHAR(1000),
+	IN inPrice DECIMAL(10, 2), IN inDiscountedPrice DECIMAL(10, 2))
+BEGIN
+	UPDATE product
+	SET name = inName, description = inDescription, price = inPrice, 
+		discounted_price = inDiscountedPrice
+	WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_delete_product
+CREATE PROCEDURE catalog_delete_product (IN inProductId INT)
+BEGIN
+	DELETE FROM product_attribute WHERE product_id = inProductId;
+	DELETE FROM product_category WHERE product_id = inProductId;
+	DELETE FROM product WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_remove_product_from_category
+CREATE PROCEDURE catalog_remove_product_from_category(
+IN inProductId INT, IN inCategoryId INT)
+BEGIN
+	DECLARE productCategoryRowsCount INT;
+	
+	SELECT count(*)
+	FROM product_category
+	WHERE product_id = inProductId
+	INTO productCategoryRowsCount;
+	
+	IF productCategoryRowsCount = 1 THEN
+		CALL catalog_delete_product(inProductId);
+		
+		SELECT 0;
+	ELSE
+		DELETE FROM product_category
+		WHERE category_id = inCategoryId AND product_id = inProductId;
+		SELECT 1;
+	END IF;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_categories 
+CREATE PROCEDURE catalog_get_categories()
+BEGIN
+	SELECT category_id, name, description
+	FROM category
+	ORDER BY category_id;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_product_info
+CREATE PROCEDURE catalog_get_product_info(IN inProductId INT)
+BEGIN
+	SELECT product_id, name, description, price, discounted_price,
+					image, image_2, thumbnail, display
+	FROM product
+	WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_categories_for_product
+CREATE PROCEDURE catalog_get_categories_for_product(IN inProductId INT)
+BEGIN
+	SELECT c.category_id, c.department_id, c.name
+	FROM category c
+	JOIN product_category pc
+		USING (category_id)
+	WHERE pc.product_id = inProductId
+	ORDER BY category_id;
+END$$
+
+-- Создаем хранимую процедуру catalog_set_product_display_option
+CREATE PROCEDURE catalog_set_product_display_option
+	(IN inProductId INT, IN inDisplay SMALLINT)
+BEGIN
+	UPDATE product SET display = inDisplay WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_assing_product_to_category
+CREATE PROCEDURE catalog_assign_product_to_category(
+	IN inProductId INT, IN inCategoryId INT)
+BEGIN
+	INSERT INTO product_category (product_id, category_id)
+		VALUES (inProductId, inCategoryId);
+END$$
+
+-- Создаем хранимую процедуру catalog_move_product_to_category
+CREATE PROCEDURE catalog_move_product_to_category( IN inProductId INT,
+	IN inSourceCategoryId INT, IN inTargetCategoryId INT)
+BEGIN
+	UPDATE product_category
+	SET category_id = inTargetCategoryId
+	WHERE product_id = inProductId
+		AND category_id = inSourceCategoryId;
+END$$
+
+-- Создаем хранимую процедуру catalog_get_attributes_not_assigned_to_product
+CREATE PROCEDURE catalog_get_attributes_not_assigned_to_product(
+	IN inProductId INT)
+BEGIN
+	SELECT a.name AS attribute_name,
+		av.attribute_value_id, av.value AS attribute_value
+	FROM attribute_value av 
+	INNER JOIN attribute a 
+		USING (attribute_id)
+	WHERE av.attribute_value_id NOT IN
+		(SELECT attribute_value_id
+			FROM product_attribute
+			WHERE product_id = inProductId)
+	ORDER BY attribute_name, av.attribute_value_id;
+END$$
+
+-- Создаем хранимую процедуру catalog_assign_attribute_value_to_product
+CREATE PROCEDURE catalog_assign_attribute_value_to_product(
+	IN inProductId INT, IN inAttributeValueId INT)
+BEGIN
+	INSERT INTO product_attribute (product_id, attribute_value_id)
+		VALUES (inProductId, inAttributeValueId);
+END$$
+
+-- Создаем хранимую процедуру catalog_remove_product_attribute_value
+CREATE PROCEDURE catalog_remove_product_attribute_value(
+	IN inProductId INT, IN inAttributeValueID INT)
+BEGIN
+	DELETE FROM product_attribute
+		WHERE product_id = inProductId AND
+			attribute_value_id = inAttributeValueId;
+END$$
+
+-- Создаем хранимую процедуру catalog_set_image
+CREATE PROCEDURE catalog_set_image(
+	IN inProductId INT, IN inImage VARCHAR(150))
+BEGIN
+	UPDATE product SET image = inImage WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_set_image_2
+CREATE PROCEDURE catalog_set_image_2(
+	IN inProductId INT, IN inImage VARCHAR(150))
+BEGIN
+	UPDATE product SET image_2 = inImage WHERE product_id = inProductId;
+END$$
+
+-- Создаем хранимую процедуру catalog_set_thumbnail
+CREATE PROCEDURE catalog_set_thumbnail(
+	IN inProductId INT, IN inThumbnail VARCHAR(150))
+BEGIN
+	UPDATE product
+	SET thumbnail = inThumbnail
+	WHERE product_id = inProductId;
+END$$

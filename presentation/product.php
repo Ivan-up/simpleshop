@@ -7,6 +7,8 @@ class Product
 	public $mProductLocations;
 	public $mLinkToContinueShopping;
 	public $mLocations;
+	public $mEditActionTarget;
+	public $mShowEditButton;
 	
 	// Private-переменная
 	private $_mProductId;
@@ -19,6 +21,13 @@ class Product
 			$this->_mProductId = (int)$_GET['ProductId'];
 		else
 			trigger_error('ProductId not set');
+		
+		// Отображаем кнопку редактирования для администратора
+		if (!(isset($_SESSION['admin_logged'])) ||
+				$_SESSION['admin_logged'] != true)
+			$this->mShowEditButton = false;
+		else
+			$this->mShowEditButton = true;
 	}
 	
 	public function init()
@@ -74,6 +83,30 @@ class Product
 			$this->mLocations[$i]['link_to_category'] = 
 				Link::ToCategory($this->mLocations[$i]['department_id'],
 													$this->mLocations[$i]['category_id']);
+		}
+		
+		// Подготавливаем кнопку редактирования
+		$this->mEditActionTarget =
+			Link::Build(mb_substr($_SERVER['REQUEST_URI'], 
+									mb_strlen(VIRTUAL_LOCATION)));
+		
+		if (isset($_SESSION['admin_logged']) &&
+				$_SESSION['admin_logged'] == true &&
+				isset ($_POST['submit_edit']))
+		{
+			$product_locations = $this->mLocations;
+			
+			if (count($product_locations) > 0)
+			{
+				$department_id = $product_locations[0]['deparment_id'];
+				$category_id = $product_locations[0]['category_id'];
+				
+				header ('Location: ' . 
+								htmlspecialchars_decode(
+								Link::ToProductAdmin($department_id,
+																			$category_id,
+																			$this->_mProductId)));
+			}
 		}
 	}
 }

@@ -10,7 +10,12 @@ class AdminMenu
 	{
 		$this->mLinkToStoreAdmin = Link::ToAdmin();
 		$this->mLinkToAttributesAdmin = Link::ToAttributesAdmin();
-		$this->mLinkToStoreFront = Link::ToIndex();
+		
+		if (isset ($_SESSION['link_to_store_front']))
+			$this->mLinkToStoreFront = $_SESSION['link_to_store_front'];
+		else 
+			$this->mLinkToStoreFront = Link::ToIndex();
+		
 		$this->mLinkToLogout = Link::ToLogout();
 	}
 }
