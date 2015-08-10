@@ -58,6 +58,12 @@
 							<span class="price">{$obj->mProducts[k].price}</span>
 						{/if}
 					</p>
+					
+					 {* Форма добавления в корзину *}
+					<form class="add-product-form" target="_self" method="post"
+					 action="{$obj->mProducts[k].link_to_add_product}">
+					
+					
 					{* Генерируем список атрибутов и их значений *}					
 					<p class="attributes">
 					
@@ -86,6 +92,11 @@
 						
 					{/section}
 					</p>
+					 {* Кнопка добавления в корзину *}
+					<p>
+						<input type="submit" name="submit" value="Add to Cart" />
+					</p>
+					</form>
 					
 					{* Отображаем кнопку редактирования для администраторов *}
 					{if $obj->mShowEditButton}

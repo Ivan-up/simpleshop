@@ -6,6 +6,8 @@ class StoreFront
 	public $mContentsCell = "first_page_contents.tpl";
 	// Определяем файл шаблона для ячеек категорий
 	public $mCategoriesCell = 'blank.tpl';
+	// Определяем файл шаблона для ячейки содержимого корзины
+	public $mCartSummaryCell = 'blank.tpl';
 	// Заголовок страницы 
 	public $mPageTitle;
 	
@@ -20,6 +22,11 @@ class StoreFront
 	{
 		$_SESSION['link_to_store_front'] =
 			Link::Build(str_replace(VIRTUAL_LOCATION, '', getenv('REQUEST_URL')));
+		
+		// Создаем ссылку для возрата в каталог
+		if (!isset($_GET['CartAction']))
+			$_SESSION['link_to_last_page_loaded'] = $_SESSION['link_to_store_front'];
+		
 		// Загружаем подробные сведения об отделе на страницу отдела
 		if (isset($_GET['DepartmentId']))
 		{
@@ -41,6 +48,12 @@ class StoreFront
 		// Загружаем страницу с результатами поиска, если выполнялся поиска
 		elseif (isset ($_GET['SearchResults']))
 			$this->mContentsCell = 'search_results.tpl';
+		
+		// Загружаем шаблоны для отображения содержимого корзины
+		if (isset($_GET['CartAction']))
+			$this->mContentsCell = 'cart_details.tpl';
+		else
+			$this->mCartSummaryCell = 'cart_summary.tpl';
 			
 		// Загружаем заголовок страницы 
 		$this->mPageTitle = $this->_GetPageTitle();

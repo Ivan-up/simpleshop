@@ -216,6 +216,10 @@ class ProductsList
 					Link::Build('product_images/' . 
 					$this->mProducts[$i]['thumbnail']);
 			
+			// Генерируем ссылку Add to Cart
+			$this->mProducts[$i]['link_to_add_product'] =
+				Link::ToCart(ADD_PRODUCT, $this->mProducts[$i]['product_id']);
+			
 			$this->mProducts[$i]['attributes'] = 
 				Catalog::GetProductAttributes($this->mProducts[$i]['product_id']);
 		}

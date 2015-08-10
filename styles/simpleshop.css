@@ -199,3 +199,29 @@ div.yui-b div form.edit-form
 	margin: 0;
 	padding: 0 0 10px 0;
 }
+.empty-cart {
+	margin: 0px;
+	padding: 5px 10px;
+}
+
+table.cart-summary {
+	font-size: 85%;
+	margin: 0px;
+	padding: 0px 5px;
+}
+table.cart-summary td {
+	border: none;
+}
+table.cart-summary td.cart-summary-subtotal {
+	border-top: 1px solid #C6E1EC;
+	padding: 5px 5px;
+}
+.cart-subtotal td {
+	border: none;
+	margin: 10px 0px;
+	width: 100%;
+}
+.yui-b div form.cart-form {
+	margin: 0;
+	padding: 0;
+}

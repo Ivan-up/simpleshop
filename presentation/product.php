@@ -73,6 +73,10 @@ class Product
 			Catalog::GetProductAttributes($this->mProduct['product_id']);
 		
 		$this->mLocations = Catalog::GetProductLocations($this->_mProductId);
+		
+		// Генерируем ссылку Add to Cart
+		$this->mProduct['link_to_add_product'] =
+			Link::ToCart(ADD_PRODUCT, $this->_mProductId);
 	
 		// Генерируем ссылки на страницы отдела и категории
 		for ($i = 0; $i < count($this->mLocations); $i++)

@@ -96,7 +96,8 @@ class Link
 	{
 		$proper_url = '';
 		
-		if (isset ($_GET['Search']) || isset($_GET['SearchResults']))
+		if (isset ($_GET['Search']) || isset($_GET['SearchResults']) ||
+				isset($_GET['CartAction']))
 		{
 			return;
 		}		
@@ -255,5 +256,36 @@ class Link
 		$link = 'Page=ProductDetails&DepartmentId=' . $departmentId .
 						'&CategoryId=' . $categoryId . '&ProductId=' . $productId;
 		return self::ToAdmin($link);
+	}
+	
+	// Создаем ссылки для корзины покупателя
+	public static function ToCart($action = 0, $target = null){
+		$link = '';
+		switch ($action)
+		{
+			case ADD_PRODUCT:
+				$link = 'index.php?CartAction=' . 
+									ADD_PRODUCT . '&ItemId=' . $target;
+				break;
+			case REMOVE_PRODUCT:
+				$link = 'index.php?CartAction=' . 
+									REMOVE_PRODUCT . '&ItemId=' . $target;
+				break;
+			case UPDATE_PRODUCTS_QUANTITIES:
+				$link = 'index.php?CartAction=' . 
+									UPDATE_PRODUCTS_QUANTITIES;
+				break;
+			case SAVE_PRODUCT_FOR_LATER:
+				$link = 'index.php?CartAction=' . 
+									SAVE_PRODUCT_FOR_LATER . '&ItemId=' . $target;
+				break;
+			case MOVE_PRODUCT_TO_CART:
+				$link = 'index.php?CartAction=' . 
+									MOVE_PRODUCT_TO_CART . '&ItemId=' . $target;
+				break;
+			default:
+				$link = 'cart-details/';
+		}
+		return self::Build($link);
 	}
 }

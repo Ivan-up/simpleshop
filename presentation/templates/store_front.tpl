@@ -29,6 +29,7 @@
 					{include file="search_box.tpl"}
 					{include file="departments_list.tpl"}
 					{include file=$obj->mCategoriesCell}
+					{include file=$obj->mCartSummaryCell}
         </div>			
       </div>
     </div>

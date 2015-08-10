@@ -16,6 +16,11 @@
 		<span class="price">{$obj->mProduct.discounted_price}</span>
 	{/if}
 </p>
+
+{* Форма добавления в корзину *}
+<form class="add-product-form" target="_self" method="post"
+ action="{$obj->mProduct.link_to_add_product}">
+
 {* Генерируем списки значение атрибутов *}
 <p class="attributes">
 
@@ -43,6 +48,12 @@
 	
 {/section}
 </p>
+
+{* Кнопка добавления к корзину *}
+<p>
+  <input type="submit" name="submit" value="Add to Cart" />
+</p>
+</form>
 
 {* Отображаем кнопку редактирования для администратора *}
 {if $obj->mShowEditButton}

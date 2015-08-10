@@ -33,6 +33,9 @@
 	# Переписываем страницы с информацией о товарах
 	RewriteRule ^.*-p([0-9]+)/?$ index.php?ProductId=$1 [L]
 	
+	# Переписываем страницы с содержимым корзины 
+	RewriteRule ^cart-details/?$ index.php?CartAction [L]
+	
 </IfModule>
 
 # Задает страницу по умолчанию кода состояния 500

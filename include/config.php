@@ -69,3 +69,14 @@ define ('ADMIN_PASSWORD', 'admin');
 // Если эта константа(yes) не установлена в no, доступ к
 // страницам администрирования возможен только с помощью SSL
 define('USE_SSL', 'no');
+
+// Типы товаров в корзине покупателя 
+define('GET_CART_PRODUCTS', 1);
+define('GET_CART_SAVED_PRODUCTS', 2);
+
+// Операции с корзиной покупателя 
+define('ADD_PRODUCT', 1);
+define('REMOVE_PRODUCT', 2);
+define('UPDATE_PRODUCTS_QUANTITIES', 3);
+define('SAVE_PRODUCT_FOR_LATER', 4);
+define('MOVE_PRODUCT_TO_CART', 5);
