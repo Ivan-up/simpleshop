@@ -288,4 +288,9 @@ class Link
 		}
 		return self::Build($link);
 	}
+	// Создаем ссылку на страницу администрирования корзин 
+	public static function ToCartsAdmin()
+	{
+		return self::ToAdmin('Page=Carts');
+	}
 }

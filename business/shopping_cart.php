@@ -168,4 +168,30 @@ class ShoppingCart
 		// Выполняем запрос 
 		DatabaseHandler::Execute($sql, $params);
 	}
+	
+	// Подсчитываем старые корзины в базе данных
+	public static function CountOldShoppingCarts($days)
+	{
+		// Составляем SQL-запрос
+		$sql = 'CALL shopping_cart_count_old_carts(:days)';
+		
+		// Создаем массив параметров 
+		$params = array (':days' => $days);
+		
+		// Выполняем запрос и возращаем результаты
+		return DatabaseHandler::GetOne($sql, $params);
+	}
+	
+	// Удаляем старые корзины 
+	public static function DeleteOldShoppingCarts($days)
+	{
+		// Составляем SQL-запрос
+		$sql = 'CALL shopping_cart_delete_old_carts(:days)';
+		
+		// Создаем массив параметров 
+		$params = array(':days' => $days);
+		
+		// Выполняем запрос
+		DatabaseHandler::Execute($sql, $params);
+	}
 }

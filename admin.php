@@ -21,6 +21,7 @@ require_once BUSINESS_DIR . 'database_handler.php';
 
 // Загружаем код уровня логики приложения 
 require_once BUSINESS_DIR . 'catalog.php';
+require_once BUSINESS_DIR . 'shopping_cart.php';
 
 // Загружаем файл шаблон Smarty
 $application = new Application();
