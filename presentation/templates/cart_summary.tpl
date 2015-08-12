@@ -1,8 +1,9 @@
 {* cart_summary.tpl *}
 {load_presentation_object filename="cart_summary" assign="obj"}
 {* Start cart summary *}
-<div class="box">
+<div class="box" id="cart-summary">
 	<p class="box-title">Cart Summary</p>
+	<div id="updating">Updating...</div>
 {if $obj->mEmptyCart}
 	<p class="empty-cart">Your shopping cart is empty!</p>
 {else}

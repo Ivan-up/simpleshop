@@ -225,3 +225,14 @@ table.cart-summary td.cart-summary-subtotal {
 	margin: 0;
 	padding: 0;
 }
+
+#updating {
+	background-color: #ff0000;
+	border: none;
+	color: #ffffff;
+	margin: 2px;
+	padding: 2px;
+	visibility: hidden;
+	position: absolute;
+	width: 70px;
+}

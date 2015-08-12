@@ -1,11 +1,13 @@
 {* cart_details.tpl *}
 {load_presentation_object filename="cart_details" assign="obj"}
+<div id="updating">Updating...</div>
 {if $obj->mIsCartNowEmpty eq 1}
 <h3>Your shopping cart is empty!</h3>
 {else}
 <h3>There are the products in your shopping cart:</h3>
-<form  method = "post" action="{$obj->mUpdateCartTarget}" class="cart-form">
-	<table class="tss-table">
+<form  method = "post" action="{$obj->mUpdateCartTarget}" class="cart-form"
+	onsubmit="return executeCartAction(this);">
+	<table class="cart-form">
 		<tr>
 			<th>Product Name</th>
 			<th>Price</th>
@@ -28,8 +30,10 @@
 			</td>
 			<td>${$obj->mCartProducts[i].subtotal}</td>
 			<td>
-				<a href="{$obj->mCartProducts[i].save}">Save for later</a>
-				<a href="{$obj->mCartProducts[i].remove}">Remove</a>
+				<a href="{$obj->mCartProducts[i].save}" 
+					onclick="return executeCartAction(this);">Save for later</a>
+				<a href="{$obj->mCartProducts[i].remove}"
+					onclick="return executeCartAction(this);">Remove</a>
 			</td>
 		</tr>
 	{/section}
@@ -66,8 +70,10 @@
 			${$obj->mSavedCartProducts[j].price}
 		</td>
 		<td>
-			<a href="{$obj->mSavedCartProducts[j].move}">Move to cart</a>
-			<a href="{$obj->mSavedCartProducts[j].remove}">Remove</a>
+			<a href="{$obj->mSavedCartProducts[j].move}"
+				onclick="return executeCartAction(this);">Move to cart</a>
+			<a href="{$obj->mSavedCartProducts[j].remove}"
+				onclick="return executeCartAction(this)">Remove</a>
 		</td>
 	</tr>
 	{/section}

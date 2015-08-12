@@ -61,7 +61,8 @@
 					
 					 {* Форма добавления в корзину *}
 					<form class="add-product-form" target="_self" method="post"
-					 action="{$obj->mProducts[k].link_to_add_product}">
+					 action="{$obj->mProducts[k].link_to_add_product}"
+					 onsubmit="retutn addProductToCart(this);">
 					
 					
 					{* Генерируем список атрибутов и их значений *}					
@@ -94,7 +95,7 @@
 					</p>
 					 {* Кнопка добавления в корзину *}
 					<p>
-						<input type="submit" name="submit" value="Add to Cart" />
+						<input type="submit" name="add_to_cart" value="Add to Cart" />
 					</p>
 					</form>
 					

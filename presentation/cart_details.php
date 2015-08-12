@@ -65,21 +65,28 @@ class CartDetails{
 												implode('/', $selected_attribute_values);
 				ShoppingCart::AddProduct($this->_mItemId, $attributes);
 				
-				header('Location: ' . $this->mLinkToContinueShopping);
+				if (!isset ($_GET['AjaxRequest']))
+					header('Location: ' . $this->mLinkToContinueShopping);
+				else
+					return;
+				
 				break;
 			case REMOVE_PRODUCT:
 				ShoppingCart::RemoveProduct($this->_mItemId);
-				header('Location: ' . Link::ToCart());
+				if (!isset ($_GET['AjaxRequest']))
+					header('Location: ' . Link::ToCart());
 				break;
 			case UPDATE_PRODUCTS_QUANTITIES:
 				for ($i = 0; $i < count($_POST['itemId']); $i++)
 					ShoppingCart::Update($_POST['itemId'][$i],
 																$_POST['quantity'][$i]);
-				header('Location: ' . Link::ToCart());
+				if (!isset ($_GET['AjaxRequest']))
+					header('Location: ' . Link::ToCart());
 				break;
 			case SAVE_PRODUCT_FOR_LATER:
-				ShoppingCart::SaveProductForLater($this->_mItemId);				
-				header('Location:' . Link::ToCart());
+				ShoppingCart::SaveProductForLater($this->_mItemId);
+				if (!isset ($_GET['AjaxRequest']))
+					header('Location:' . Link::ToCart());
 				break;
 			case MOVE_PRODUCT_TO_CART:
 				ShoppingCart::MoveProductToCart($this->_mItemId);

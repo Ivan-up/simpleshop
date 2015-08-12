@@ -97,7 +97,7 @@ class Link
 		$proper_url = '';
 		
 		if (isset ($_GET['Search']) || isset($_GET['SearchResults']) ||
-				isset($_GET['CartAction']))
+				isset($_GET['CartAction']) || isset ($_GET['AjaxRequest']))
 		{
 			return;
 		}		
