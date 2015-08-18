@@ -293,4 +293,17 @@ class Link
 	{
 		return self::ToAdmin('Page=Carts');
 	}
+	
+	// Создаем ссылку на страницу администрирования заказов
+	public static function ToOrdersAdmin()
+	{
+		return self::ToAdmin('Page=Orders');
+	}
+	
+	// Создаем ссылку на страницу администрирования деталей заказов
+	public static function ToOrderDetailsAdmin($orderId)
+	{
+		$link = 'Page=OrderDetails&OrderId=' . $orderId;
+		return self::ToAdmin($link);
+	}
 }

@@ -236,3 +236,6 @@ table.cart-summary td.cart-summary-subtotal {
 	position: absolute;
 	width: 70px;
 }
+.menu {
+	font-size: 93%;
+}

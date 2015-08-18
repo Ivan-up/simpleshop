@@ -5,6 +5,7 @@
 	<a href="{$obj->mLinkToStoreAdmin}">CATALOG ADMIN</a> |
 	<a href="{$obj->mLinkToAttributesAdmin}">PRODUCTS ATTRIBUTES ADMIN</a> |
 	<a href="{$obj->mLinkToCartsAdmin}">CARTS ADMIN</a> |
+	<a href="{$obj->mLinkToOrdersAdmin}">ORDERS ADMIN</a> |
 	<a href="{$obj->mLinkToStoreFront}">STOREFRONT</a> |
 	<a href="{$obj->mLinkToLogout}">LOGOUT</a> |
 </p>

@@ -8,6 +8,10 @@ var showErrors = true;
 // Содержит ссылку или форму, оправленную посетителем на сервер
 var actionObject = "";
 
+// Устанавливаем в true после щелчка на кнопке Place Order,
+// в противной случаи - false
+var placingOrder = false;
+
 // Создаем экземпляр XMLHttpRequest
 function createXmlHttpRequestObject()
 {
@@ -179,6 +183,8 @@ function updateCartSummary()
 // Вызывается при обновлениях содержимого корзины
 function executeCartAction(obj)
 {
+	// Возращаем к классической отправке формы при создании заказа
+	if (placingOrder) return true;
 	// Отображаем сообщение "Updating..."
 	document.getElementById('updating').style.visibility = 'visible';
 	
@@ -206,8 +212,11 @@ function executeCartAction(obj)
 		{
 			for (i = 0; i < formElements.length; i++)
 			{
-				params += '&' + formElements[i].name + '=';
-				params += encodeURIComponent(formElements[i].value);
+				if (formElements[i].name != 'place_order')
+				{
+					params += '&' + formElements[i].name + '=';
+					params += encodeURIComponent(formElements[i].value);
+				}
 			}
 		}
 	}

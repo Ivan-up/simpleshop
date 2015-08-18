@@ -194,4 +194,17 @@ class ShoppingCart
 		// Выполняем запрос
 		DatabaseHandler::Execute($sql, $params);
 	}
+	
+	// Создаем новый заказ 
+	public static function CreateOrder()
+	{
+		// Создаем SQL-запрос
+		$sql = 'CALL shopping_cart_create_order(:cart_id)';
+		
+		// Создаем массив параметров 
+		$params = array (':cart_id' => self::GetCartId());
+		
+		// Выполняем запрос и возращаем результат
+		return DatabaseHandler::GetOne($sql, $params);
+	}
 }

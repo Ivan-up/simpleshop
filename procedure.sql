@@ -741,3 +741,123 @@ BEGIN
 			MAX(added_on))
 			AS sc);
 END$$
+
+-- Создаем хранимую процедуру shopping_cart_emtpy 
+CREATE PROCEDURE shopping_cart_empty(IN inCartId CHAR(32))
+BEGIN
+	DELETE FROM shopping_cart WHERE cart_id = inCartId;
+END$$
+
+-- Создаем хранимую процедуру shopping_cart_created_order
+CREATE PROCEDURE shopping_cart_create_order(IN inCartId CHAR(32))
+BEGIN
+	DECLARE orderId INT;
+	
+	-- Вставляем в таблицу orders новую запись и получаем новый 
+	-- идентификатор записи 
+	INSERT INTO orders (created_on) VALUES (NOW());
+	-- Получаем новый идентификатор
+	SELECT LAST_INSERT_ID() INTO orderId;
+	
+	INSERT INTO order_details (order_id, product_id, attributes,
+		product_name, quantity, unit_cost)
+	SELECT orderId, p.product_id, sc.attributes, p.name, sc.quantity,
+	COALESCE(NULLIF(p.discounted_price, 0), p.price) AS unit_cost
+	FROM shopping_cart sc
+	INNER JOIN product p
+								ON sc.product_id = p.product_id
+	WHERE sc.cart_id = inCartId AND sc.buy_now;
+	
+	-- Сохраняем общую сумму заказа
+	UPDATE orders 
+	SET total_amount = (SELECT SUM(unit_cost * quantity)
+											FROM order_details
+											WHERE order_id = orderId)
+	WHERE order_id = orderId;
+	
+	-- Очищаем корзину покупателя
+	CALL shopping_cart_empty(inCartId);
+	
+	-- Возвращаем идентификатор заказа 
+	SELECT orderId;
+END$$
+
+-- Создаем хранимую процедуру orders_get_most_recent_orders
+CREATE PROCEDURE orders_get_most_recent_orders(IN inHowMany INT)
+BEGIN
+	PREPARE statement FROM
+		"SELECT order_id, total_amount, created_on,
+			shipped_on, status, customer_name
+		FROM orders
+		ORDER BY created_on DESC
+		LIMIT ?";
+		
+		SET @p1 = inHowMany;
+		
+		EXECUTE statement USING @p1;
+END$$
+
+-- Создаем хранимую процедуру orders_get_orders_between_dates
+CREATE PROCEDURE orders_get_orders_between_dates(
+	IN inStartDate DATETIME, IN inEndDate DATETIME)
+BEGIN
+	SELECT order_id, total_amount, created_on,
+		shipped_on, status, customer_name
+	FROM orders
+	WHERE created_on >= inStartDate AND created_on <= inEndDate
+	ORDER BY created_on DESC;
+END$$
+
+-- Создаем хранимую процедуру orders_get_orders_by_status
+CREATE PROCEDURE orders_get_orders_by_status(IN inStatus INT)
+BEGIN
+	SELECT order_id, total_amount, created_on,
+		shipped_on, status, customer_name
+	FROM orders
+	WHERE status = inStatus
+	ORDER BY created_on DESC;
+END$$
+
+-- Создаем хранимую процедуру orders_get_order_info
+CREATE PROCEDURE orders_get_order_info(IN inOrderId INT)
+BEGIN
+	SELECT order_id, total_amount, created_on, shipped_on, status,
+		comments, customer_name, shipping_address, customer_email
+	FROM orders
+	WHERE order_id = inOrderId;
+END$$
+
+-- Создаем хранимую процедуру order_get_order_details
+CREATE PROCEDURE orders_get_order_details(IN inOrderId INT)
+BEGIN
+	SELECT order_id, product_id, attributes, product_name,
+		quantity, unit_cost, (quantity * unit_cost) AS subtotal
+	FROM order_details
+	WHERE order_id = inOrderId;
+END$$
+
+-- Создаем хранимую процедуру orders_update_order
+CREATE PROCEDURE orders_update_order(IN inOrderId INT, IN inStatus INT,
+	IN inComments VARCHAR(255), IN inCustomerName VARCHAR(50),
+	IN inShippingAddress VARCHAR(255), IN inCustomerEmail VARCHAR(50))
+BEGIN
+	DECLARE currentStatus INT;
+	
+	SELECT status
+	FROM orders
+	WHERE order_id = inOrderId
+	INTO currentStatus;
+	
+	IF inStatus != currentStatus AND (inStatus = 0 OR inStatus = 1) THEN 
+		UPDATE orders SET shipped_on = NULL WHERE order_id = inOrderId;
+	ELSEIF inStatus != currentStatus AND inStatus = 2 THEN
+		UPDATE orders SET shipped_on = NOW() WHERE order_id = inOrderId;
+	END IF;
+	
+	UPDATE orders
+	SET status = inStatus, comments = inComments,
+		customer_name = inCustomerName,
+		shipping_address = inShippingAddress,
+		customer_email = inCustomerEmail
+	WHERE order_id = inOrderId;
+END$$

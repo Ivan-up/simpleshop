@@ -4,6 +4,7 @@ class AdminMenu
 	public $mLinkToStoreAdmin;
 	public $mLinkToAttributesAdmin;
 	public $mLinkToCarstAdmin;
+	public $mLinkToOrdersAdmin;
 	public $mLinkToStoreFront;
 	public $mLinkToLogout;
 	
@@ -12,6 +13,7 @@ class AdminMenu
 		$this->mLinkToStoreAdmin = Link::ToAdmin();
 		$this->mLinkToAttributesAdmin = Link::ToAttributesAdmin();
 		$this->mLinkToCartsAdmin = Link::ToCartsAdmin();
+		$this->mLinkToOrdersAdmin = Link::ToOrdersAdmin();
 		
 		if (isset ($_SESSION['link_to_store_front']))
 			$this->mLinkToStoreFront = $_SESSION['link_to_store_front'];

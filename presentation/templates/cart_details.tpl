@@ -49,6 +49,10 @@
 			<td align="right">
 				<input type="submit" name="update" value="Update" />
 			</td>
+			<td align="right">
+				<input type="submit" name="place_order" value="Place Order"
+					onclick="placingOrder=true;">
+			</td>
 		</tr>
 	</table>	
 </form>

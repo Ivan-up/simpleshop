@@ -101,6 +101,15 @@ class CartDetails{
 			без учета налогов и цены доставки*/
 		$this->mTotalAmount = ShoppingCart::GetTotalAmount();
 		
+		// Если нажата кнопка Place Order...
+		if (isset ($_POST['place_order']))
+		{
+			// Создаем заказ и получаем его идентификатор
+			$order_id = ShoppingCart::CreateOrder();
+			
+			exit('Перенаравление на страницу оплаты');
+		}
+		
 		// Получаем список товаров в корзине
 		$this->mCartProducts =
 			ShoppingCart::GetCartProducts(GET_CART_PRODUCTS);
