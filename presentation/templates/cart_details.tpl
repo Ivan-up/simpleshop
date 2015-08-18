@@ -86,3 +86,18 @@
 {if $obj->mLinkToContinueShopping}
 <p><a href="{$obj->mLinkToContinueShopping}">Continue Shopping</a></p>
 {/if}
+{if $obj->mRecommendations}
+<h2>Customers who bought this also bought:</h2>
+<ol>
+	{section name=m loop=$obj->mRecommendations}
+	<li>
+		{strip}
+			<a href="{$obj->mRecommendations[m].link_to_product}">
+				{$obj->mRecommendations[m].product_name}
+			</a>
+		{/strip}
+		<span class="list"> - {$obj->mRecommendations[m].description}</span>
+	</li>
+	{/section}
+</ol>
+{/if}

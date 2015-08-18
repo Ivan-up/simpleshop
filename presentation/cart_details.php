@@ -8,6 +8,7 @@ class CartDetails{
 	public $mIsCartNowEmpty = 0; // Корзина пуста?
 	public $mIsCartLaterEmpty = 0; // Список отложенных товаров пуст?
 	public $mUpdateCartTarget;
+	public $mRecommendations;
 	
 	// Private-атрибуты
 	private $_mItemId;
@@ -146,5 +147,14 @@ class CartDetails{
 				Link::ToCart(REMOVE_PRODUCT,
 										$this->mSavedCartProducts[$i]['item_id']);
 		}
+		
+		// Получаем рекомендации для товаров 
+		$this->mRecommendations =
+			ShoppingCart::GetRecommendation();
+			
+		// Генерируем ссылки на рекомендованные товары 
+		for ($i = 0; $i < count($this->mRecommendations); $i++)
+			$this->mRecommendations[$i]['link_to_product'] =
+				Link::ToProduct($this->mRecommendations[$i]['product_id']);
 	}
 }

@@ -9,6 +9,7 @@ class Product
 	public $mLocations;
 	public $mEditActionTarget;
 	public $mShowEditButton;
+	public $mRecommendations;
 	
 	// Private-переменная
 	private $_mProductId;
@@ -77,7 +78,16 @@ class Product
 		// Генерируем ссылку Add to Cart
 		$this->mProduct['link_to_add_product'] =
 			Link::ToCart(ADD_PRODUCT, $this->_mProductId);
+		
+		// Получаем рекомендации товаров 
+		$this->mRecommendations =
+			Catalog::GetRecommendations($this->_mProductId); 
 	
+		// Генерируем ссылки на рекомендованные товары 
+		for ($i = 0; $i < count($this->mRecommendations); $i++)
+			$this->mRecommendations[$i]['link_to_product'] =
+				Link::ToProduct($this->mRecommendations[$i]['product_id']);
+				
 		// Генерируем ссылки на страницы отдела и категории
 		for ($i = 0; $i < count($this->mLocations); $i++)
 		{

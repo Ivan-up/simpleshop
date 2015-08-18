@@ -799,4 +799,19 @@ class Catalog
 			// Выполняем запрос 
 			DatabaseHandler::Execute($sql, $params);
 		}
+		
+		// Получаем рекомендации для товаров 
+		public static function GetRecommendations($productId)
+		{
+			// Составляем SQL - запрос 
+			$sql = 'CALL catalog_get_recommendations(
+											:product_id, :short_product_description_length)';
+			
+			// Создаем массив параметров
+			$params = array (':product_id' => $productId,
+												':short_product_description_length' =>
+												SHORT_PRODUCT_DESCRIPTION_LENGTH);
+			// Выполняем запрос и возращаем результаты
+			return DatabaseHandler::GetAll($sql, $params);
+		}
 }

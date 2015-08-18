@@ -207,4 +207,20 @@ class ShoppingCart
 		// Выполняем запрос и возращаем результат
 		return DatabaseHandler::GetOne($sql, $params);
 	}
+	
+	// Получаем рекомендации для товаров из корзины покупателя 
+	public static function GetRecommendation()
+	{
+		// Составляем SQL-запрос
+		$sql = 'CALL shopping_cart_get_recommendations(
+									:cart_id, :short_product_description_lenght)';
+		
+		// Создаем массив параметров 
+		$params = array (':cart_id' => self::GetCartId(),
+										 ':short_product_description_lenght' => 
+											SHORT_PRODUCT_DESCRIPTION_LENGTH);
+		
+		// Выполняем запрос и возвращаем результаты
+		return DatabaseHandler::GetAll($sql, $params);
+	}
 }

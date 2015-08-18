@@ -861,3 +861,63 @@ BEGIN
 		customer_email = inCustomerEmail
 	WHERE order_id = inOrderId;
 END$$
+
+-- Создаем хранимую процедуру catalog_get_recommendations
+CREATE PROCEDURE catalog_get_recommendations(
+	IN inProductId INT, IN inShortProductDescriptionLength INT)
+BEGIN
+	PREPARE statement FROM 
+		"SELECT od2.product_id, od2.product_name,
+			IF(CHAR_LENGTH(p.description) <= ?, p.description,
+				CONCAT(LEFT(p.description, ?), '...')) AS description
+		FROM order_details od1
+		JOIN order_details od2 ON od1.order_id = od2.order_id
+		JOIN product p ON od2.product_id = p.product_id 
+		WHERE od1.product_id = ? AND
+			od2.product_id != ? 
+		GROUP BY od2.product_id
+		ORDER BY COUNT(od2.product_id) DESC
+		LIMIT 5";
+		
+		SET @p1 = inShortProductDescriptionLength;
+		SET @p2 = inProductId;
+		
+		EXECUTE statement USING @p1, @p1, @p2, @p2;
+END$$
+
+-- Создаем хранимую процедуру shopping_cart_get_recommendations 
+CREATE PROCEDURE shopping_cart_get_recommendations (
+	IN inCartId CHAR(32), IN inShortProductDescriptionLength INT)
+BEGIN
+	PREPARE statement FROM 
+		"-- Возвращает товары, присутствующие в списке заказов
+			SELECT od1.product_id, od1.product_name,
+				IF (CHAR_LENGTH(p.description) <= ?, p.description, 
+						CONCAT(LEFT(p.description, ?), '...')) AS description
+			FROM order_details od1 
+			JOIN order_details od2
+				ON od1.order_id = od2.order_id
+			JOIN product p 
+				ON od1.product_id = p.product_id
+			JOIN shopping_cart
+				ON od2.product_id = shopping_cart.product_id
+			WHERE shopping_cart.cart_id = ?
+				-- Среди рекомендаций не должно быть товаров 
+				-- уже присутствующих в корзине покупателя
+				AND od1.product_id NOT IN
+				(-- Возвращаем товары, присутствующие
+				 -- в корзине покупателя 
+				SELECT product_id 
+				FROM shopping_cart
+				WHERE cart_id = ?)
+			-- Группируем по product_id, чтобы подсчитать частоту встречаемости
+			GROUP BY od1.product_id
+			-- Упорядочиваем по убыванию частоты 
+			ORDER BY COUNT(od1.product_id) DESC
+			LIMIT 5";
+			
+	SET @p1 = inShortProductDescriptionLength;
+	SET @p2 = inCartId;
+	
+	EXECUTE statement USING @p1, @p1, @p2, @p2;
+END$$
