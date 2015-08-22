@@ -241,3 +241,9 @@ table.cart-summary td.cart-summary-subtotal {
 }
 
 .list { color: #000000; }
+
+.customer-table td {
+	border: none;
+	padding-left: 0;
+	vertical-align: top;
+}

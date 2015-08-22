@@ -97,7 +97,12 @@ class Link
 		$proper_url = '';
 		
 		if (isset ($_GET['Search']) || isset($_GET['SearchResults']) ||
-				isset($_GET['CartAction']) || isset ($_GET['AjaxRequest']))
+				isset($_GET['CartAction']) || isset ($_GET['AjaxRequest']) || 
+				isset($_POST['Login']) || isset ($_GET['Logout']) ||
+				isset($_GET['RegisterCustomer']) || 
+				isset($_GET['AddressDetails']) ||
+				isset ($_GET['CreditCardDetails']) || 
+				isset ($_GET['AccountDetails']))
 		{
 			return;
 		}		
@@ -305,5 +310,29 @@ class Link
 	{
 		$link = 'Page=OrderDetails&OrderId=' . $orderId;
 		return self::ToAdmin($link);
+	}
+	
+	// Создаем ссылку на страницу регистрации пользователей
+	public static function ToRegisterCustomer()
+	{
+		return self::Build('register-customer/', 'https');
+	}
+	
+	// Создаем ссылку на страницу обновления сведений о пользователе 
+	public static function ToAccountDetails()
+	{
+		return self::Build('account-details/', 'https');
+	}
+	
+	// Создаем ссылку на страницу обновления сведений о кредитной карте 
+	public static function ToCreditCardDetails()
+	{
+		return self::Build('credit-card-details/', 'https');
+	}
+	
+	// Создаем ссылку на страницу обновления сведений об адреск пользователя 
+	public static function ToAddressDetails()
+	{
+		return self::Build('address-details/', 'https');
 	}
 }

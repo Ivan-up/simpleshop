@@ -36,6 +36,17 @@
 	# Переписываем страницы с содержимым корзины 
 	RewriteRule ^cart-details/?$ index.php?CartAction [L]
 	
+	# Переписываем страницы регистрации пользователей 
+	RewriteRule ^register-customer/?$ index.php?RegisterCustomer [L]
+	
+	# Переписываем страницы со сведениями об адресах
+	RewriteRule ^address-details/?$ index.php?AddressDetails [L]
+	
+	# Переписываем страницу со сведениями об кредитных картах 
+	RewriteRule ^credit-card-details/?$ index.php?CreditCardDetails [L]
+	
+	# Переписываем страницы со сведениями об учетных записях
+	RewriteRule ^account-details/?$ index.php?AccountDetails [L]
 </IfModule>
 
 # Задает страницу по умолчанию кода состояния 500

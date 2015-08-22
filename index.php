@@ -24,6 +24,10 @@ require_once BUSINESS_DIR . 'database_handler.php';
 // Загружаем уровень логики приложения 
 require_once BUSINESS_DIR . 'catalog.php';
 require_once BUSINESS_DIR . 'shopping_cart.php';
+require_once BUSINESS_DIR . 'password_hasher.php';
+require_once BUSINESS_DIR . 'symmetric_crypt.php';
+require_once BUSINESS_DIR . 'secure_card.php';
+require_once BUSINESS_DIR . 'customer.php';
 
 // Коррекция URL
 Link::CheckRequest();

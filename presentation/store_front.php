@@ -8,6 +8,8 @@ class StoreFront
 	public $mCategoriesCell = 'blank.tpl';
 	// Определяем файл шаблона для ячейки содержимого корзины
 	public $mCartSummaryCell = 'blank.tpl';
+	// Определяем файл шаблона для полей аутентификации 
+	public $mLoginOrLoggedCell = 'customer_login.tpl';
 	// Заголовок страницы 
 	public $mPageTitle;
 	
@@ -21,11 +23,24 @@ class StoreFront
 	public function init()
 	{
 		$_SESSION['link_to_store_front'] =
-			Link::Build(str_replace(VIRTUAL_LOCATION, '', getenv('REQUEST_URL')));
+			Link::Build(mb_substr($_SERVER['REQUEST_URI'], mb_strlen(VIRTUAL_LOCATION)));
 		
-		// Создаем ссылку для возрата в каталог
-		if (!isset($_GET['CartAction']))
+		// Создаем ссылку "continue shopping"
+		if (!isset($_GET['CardAction']) && 
+				!isset($_GET['Logout']) &&
+				!isset($_GET['RegisterCustomer']) &&
+				!isset($_GET['AddressDetails']) &&
+				!isset($_GET['CreditCardDetails']) &&
+				!isset($_GET['AccountDetails']))
 			$_SESSION['link_to_last_page_loaded'] = $_SESSION['link_to_store_front'];
+			
+		// Создаем ссылку "cancel" для страницы со сведениями о пользователе
+		if (!isset($_GET['Logout']) &&
+				!isset($_GET['RegisterCustomer']) &&
+				!isset($_GET['AddressDetails']) &&
+				!isset($_GET['CreditCardDetails']) &&
+				!isset($_GET['AccountDetails']))
+			$_SESSION['customer_cancel_link'] = $_SESSION['link_to_store_front'];
 		
 		// Загружаем подробные сведения об отделе на страницу отдела
 		if (isset($_GET['DepartmentId']))
@@ -54,6 +69,17 @@ class StoreFront
 			$this->mContentsCell = 'cart_details.tpl';
 		else
 			$this->mCartSummaryCell = 'cart_summary.tpl';
+		
+		if (Customer::IsAuthenticated())
+			$this->mLoginOrLoggedCell = 'customer_logged.tpl';
+		
+		if (isset($_GET['RegisterCustomer']) || 
+				isset($_GET['AccountDetails']))
+			$this->mContentsCell = 'customer_details.tpl';
+		elseif(isset($_GET['AddressDetails']))
+			$this->mContentsCell = 'customer_address.tpl';
+		elseif (isset($_GET['CreditCardDetails']))
+			$this->mContentsCell = 'customer_credit_card.tpl';
 			
 		// Загружаем заголовок страницы 
 		$this->mPageTitle = $this->_GetPageTitle();

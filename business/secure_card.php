@@ -151,7 +151,7 @@ class SecureCard
 		}
 		else
 		{
-			throw new Exception('Property' . $name . ' not found');
+			throw new Exception('Property ' . $name . ' not found');
 		}
 	}
 }
